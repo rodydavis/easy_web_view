@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Easy',
+      title: 'Easy Web View',
       theme: ThemeData.light(),
       home: HomeScreen(),
     );

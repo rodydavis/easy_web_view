@@ -25,10 +25,10 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 class _EasyWebViewState extends State<EasyWebView> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return OptionalSizedChild(
       width: widget?.width,
       height: widget?.height,
-      child: Placeholder(),
+      builder: (w, h) => Placeholder(),
     );
   }
 }

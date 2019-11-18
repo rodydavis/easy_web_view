@@ -1,3 +1,4 @@
+import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,8 +15,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('Flutter Live View'),
       ),
-      body: LiveView(
+      body: EasyWebView(
         src: url,
+        // width: 100,
+        // height: 100,
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
