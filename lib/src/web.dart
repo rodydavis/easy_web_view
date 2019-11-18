@@ -58,7 +58,6 @@ class _EasyWebViewState extends State<EasyWebView> {
 
   void _setup(String src, num width, num height) {
     final src = widget.src;
-    final width = widget.width;
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory('iframe-$src', (int viewId) {
       final element = html.IFrameElement()
@@ -69,6 +68,5 @@ class _EasyWebViewState extends State<EasyWebView> {
       }
       return element;
     });
-    if (mounted) setState(() {});
   }
 }

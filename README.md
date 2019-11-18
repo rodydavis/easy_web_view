@@ -1,6 +1,6 @@
-# flutter_live_updates
+# easy_web_view
 
-Easy WebViews in Flutter!
+Easy Web Views in Flutter on Web and Mobile!
 
 ## Getting Started
 
@@ -12,3 +12,16 @@ Setup iOS Info.plist
 ```
 
 For Loading a new url or changing width/height just call setState!
+
+```dart
+EasyWebView(
+  src: 'https://flutter.dev',
+// width: 100,
+// height: 100,
+)
+```
+
+## Screenshots
+
+![](/doc/screenshots/mobile.png)
+![](/doc/screenshots/web.png)

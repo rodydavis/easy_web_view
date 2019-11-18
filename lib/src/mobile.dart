@@ -47,8 +47,9 @@ class _EasyWebViewState extends State<EasyWebView> {
       height: widget?.height,
       builder: (w, h) => WebView(
         initialUrl: widget.src,
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller = webViewController;
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (val) {
+          _controller = val;
         },
       ),
     );
