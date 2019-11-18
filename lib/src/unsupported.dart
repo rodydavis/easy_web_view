@@ -1,0 +1,34 @@
+import 'package:easy_web_view/src/impl.dart';
+import 'package:flutter/material.dart';
+
+class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
+  const EasyWebView({
+    Key key,
+    @required this.src,
+    this.height,
+    this.width,
+  }) : super(key: key);
+
+  @override
+  _EasyWebViewState createState() => _EasyWebViewState();
+
+  @override
+  final num height;
+
+  @override
+  final String src;
+
+  @override
+  final num width;
+}
+
+class _EasyWebViewState extends State<EasyWebView> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: widget?.width,
+      height: widget?.height,
+      child: Placeholder(),
+    );
+  }
+}
