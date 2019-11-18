@@ -61,6 +61,7 @@ class _EasyWebViewState extends State<EasyWebView> {
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory('iframe-$src', (int viewId) {
       final element = html.IFrameElement()
+        ..style.border = '0'
         ..height = height.toInt().toString()
         ..width = width.toInt().toString();
       if (src != null) {

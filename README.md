@@ -23,5 +23,5 @@ EasyWebView(
 
 ## Screenshots
 
-![](/doc/screenshots/mobile.png)
-![](/doc/screenshots/web.png)
+![](https://github.com/rodydavis/easy_web_view/blob/master/doc/screenshots/mobile.png?raw=true)
+![](https://github.com/rodydavis/easy_web_view/blob/master/doc/screenshots/web.png?raw=true)
