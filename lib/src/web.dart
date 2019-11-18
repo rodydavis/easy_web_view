@@ -49,6 +49,7 @@ class _EasyWebViewState extends State<EasyWebView> {
         _setup(src, w, h);
         return AbsorbPointer(
           child: HtmlElementView(
+            key: widget?.key,
             viewType: 'iframe-$src',
           ),
         );
