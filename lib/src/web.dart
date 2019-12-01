@@ -9,6 +9,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     @required this.src,
     this.height,
     this.width,
+    this.webAllowFullScreen = true,
   }) : super(key: key);
 
   @override
@@ -22,6 +23,9 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final num width;
+
+  @override
+  final bool webAllowFullScreen;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
@@ -63,6 +67,7 @@ class _EasyWebViewState extends State<EasyWebView> {
     ui.platformViewRegistry.registerViewFactory('iframe-$src', (int viewId) {
       final element = html.IFrameElement()
         ..style.border = '0'
+        ..allowFullscreen = widget.webAllowFullScreen
         ..height = height.toInt().toString()
         ..width = width.toInt().toString();
       if (src != null) {

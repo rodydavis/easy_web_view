@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class EasyWebViewImpl {
   final String src;
   final num width, height;
+  final bool webAllowFullScreen;
 
   EasyWebViewImpl({
     @required this.src,
     this.width,
     this.height,
+    this.webAllowFullScreen = true,
   });
 }
 

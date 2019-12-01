@@ -7,6 +7,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     @required this.src,
     this.height,
     this.width,
+    this.webAllowFullScreen = true,
   }) : super(key: key);
 
   @override
@@ -20,6 +21,9 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final num width;
+
+  @override
+  final bool webAllowFullScreen;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
