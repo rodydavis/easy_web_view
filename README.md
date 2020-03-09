@@ -5,6 +5,14 @@
 
 Easy Web Views in Flutter on Web and Mobile!
 
+- Supports HTML Content or a Single Element
+- Supports Markdown Source
+- Supports convert to Flutter widgets
+- Supports remote download of url
+- Markdown -> Html
+- Html -> Markdown
+- Supports change in url
+
 ## Getting Started
 
 Setup iOS Info.plist
