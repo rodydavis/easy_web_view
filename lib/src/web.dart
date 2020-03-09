@@ -1,11 +1,11 @@
-import 'package:easy_web_view/src/impl.dart';
-import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 import 'dart:html' as html;
+import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+
+import 'impl.dart';
 
 class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   const EasyWebView({

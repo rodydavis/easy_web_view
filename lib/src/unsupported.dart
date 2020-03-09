@@ -1,5 +1,6 @@
-import 'package:easy_web_view/src/impl.dart';
 import 'package:flutter/material.dart';
+
+import 'impl.dart';
 
 class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   const EasyWebView({

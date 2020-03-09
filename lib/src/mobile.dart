@@ -1,9 +1,7 @@
-import 'package:easy_web_view/src/impl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:http/http.dart' as http;
+
+import 'impl.dart';
 
 class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   const EasyWebView({
@@ -112,6 +110,4 @@ class _EasyWebViewState extends State<EasyWebView> {
       },
     );
   }
-
- 
 }
