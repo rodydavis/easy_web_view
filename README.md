@@ -1,5 +1,6 @@
 [![Buy Me A Coffee](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/rodydavis)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WSH3GVC49GNNJ)
+[![flutter_whatsnew](https://img.shields.io/pub/v/easy_web_view.svg)](https://pub.dev/packages/easy_web_view)
 
 # easy_web_view
 
