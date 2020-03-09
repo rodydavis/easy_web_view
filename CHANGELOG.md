@@ -1,3 +1,7 @@
-## 0.0.1
+## 1.0.1
 
-* TODO: Describe initial release.
+* Added Allow Fullscreen on Web
+
+## 1.0.0
+
+* Initial Plugin

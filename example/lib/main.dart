@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
       title: 'Easy Web View',
       theme: ThemeData.light(),
       home: HomeScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

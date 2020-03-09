@@ -8,7 +8,12 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.height,
     this.width,
     this.webAllowFullScreen = true,
-  }) : super(key: key);
+    this.isHtml = false,
+    this.isMarkdown = false,
+    this.convertToWidets = false,
+    this.headers = const {},
+  })  : assert((isHtml && isMarkdown) == false),
+        super(key: key);
 
   @override
   _EasyWebViewState createState() => _EasyWebViewState();
@@ -24,6 +29,18 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final bool webAllowFullScreen;
+
+  @override
+  final bool isMarkdown;
+
+  @override
+  final bool isHtml;
+
+  @override
+  final bool convertToWidets;
+
+  @override
+  final Map<String, String> headers;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {

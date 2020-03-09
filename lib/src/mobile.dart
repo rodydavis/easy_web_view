@@ -1,6 +1,9 @@
 import 'package:easy_web_view/src/impl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   const EasyWebView({
@@ -9,7 +12,12 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.height,
     this.width,
     this.webAllowFullScreen = true,
-  }) : super(key: key);
+    this.isHtml = false,
+    this.isMarkdown = false,
+    this.convertToWidets = false,
+    this.headers = const {},
+  })  : assert((isHtml && isMarkdown) == false),
+        super(key: key);
 
   @override
   _EasyWebViewState createState() => _EasyWebViewState();
@@ -25,6 +33,18 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final bool webAllowFullScreen;
+
+  @override
+  final bool isMarkdown;
+
+  @override
+  final bool isHtml;
+
+  @override
+  final bool convertToWidets;
+
+  @override
+  final Map<String, String> headers;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
@@ -33,7 +53,7 @@ class _EasyWebViewState extends State<EasyWebView> {
   @override
   void didUpdateWidget(EasyWebView oldWidget) {
     if (oldWidget.src != widget.src) {
-      _controller.loadUrl(widget.src);
+      _controller.loadUrl(_updateUrl(widget.src), headers: widget.headers);
     }
     if (oldWidget.height != widget.height) {
       if (mounted) setState(() {});
@@ -44,19 +64,54 @@ class _EasyWebViewState extends State<EasyWebView> {
     super.didUpdateWidget(oldWidget);
   }
 
+  String _updateUrl(String url) {
+    String _src = url;
+    if (widget.isMarkdown) {
+      _src = "data:text/html;charset=utf-8," +
+          Uri.encodeComponent(EasyWebViewImpl.md2Html(url));
+    }
+    if (widget.isHtml) {
+      _src = "data:text/html;charset=utf-8," +
+          Uri.encodeComponent(EasyWebViewImpl.wrapHtml(url));
+    }
+    return _src;
+  }
+
   @override
   Widget build(BuildContext context) {
     return OptionalSizedChild(
       width: widget?.width,
       height: widget?.height,
-      builder: (w, h) => WebView(
-        key: widget?.key,
-        initialUrl: widget.src,
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (val) {
-          _controller = val;
-        },
-      ),
+      builder: (w, h) {
+        String src = widget.src;
+        if (widget.convertToWidets) {
+          if (EasyWebViewImpl.isUrl(src)) {
+            return RemoteMarkdown(
+              src: src,
+              headers: widget.headers,
+            );
+          }
+          String _markdown = '';
+          if (widget.isMarkdown) {
+            _markdown = src;
+          }
+          if (widget.isHtml) {
+            src = EasyWebViewImpl.wrapHtml(src);
+            _markdown = EasyWebViewImpl.html2Md(src);
+          }
+          return LocalMarkdown(data: _markdown);
+        }
+        return WebView(
+          key: widget?.key,
+          initialUrl: _updateUrl(src),
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (val) {
+            _controller = val;
+          },
+        );
+      },
     );
   }
+
+ 
 }
