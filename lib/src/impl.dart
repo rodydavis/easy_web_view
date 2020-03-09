@@ -26,7 +26,7 @@ class EasyWebViewImpl {
   }) : assert((isHtml && isMarkdown) == false);
 
   static String wrapHtml(String src) {
-    if (src.contains('<html>') && src.contains('</html>')) {
+    if (EasyWebViewImpl.isValidHtml(src)) {
       return """
 <!DOCTYPE html>
 <html lang="en">
@@ -50,6 +50,9 @@ $src
 
   static bool isUrl(String src) =>
       src.startsWith('https://') || src.startsWith('http://');
+
+  static bool isValidHtml(String src) =>
+      src.contains('<html>') && src.contains('</html>');
 }
 
 class OptionalSizedChild extends StatelessWidget {
@@ -105,8 +108,12 @@ class RemoteMarkdown extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
         if (response.data.statusCode == 200) {
+          String content = response.data.body;
+          if (EasyWebViewImpl.isValidHtml(src)) {
+            content = EasyWebViewImpl.html2Md(content);
+          }
           return LocalMarkdown(
-            data: EasyWebViewImpl.html2Md(response.data.body),
+            data: content,
           );
         }
         return Center(child: Icon(Icons.error));

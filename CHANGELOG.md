@@ -1,3 +1,12 @@
+## 1.1.0
+
+* Adding Markdown Source
+* Adding Html Source
+* Adding Html Element Source
+* Updating Controller
+* Adding Remote Download
+* Adding Convert to Widgets
+
 ## 1.0.1
 
 * Added Allow Fullscreen on Web
