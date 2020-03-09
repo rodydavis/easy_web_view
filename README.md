@@ -15,6 +15,8 @@ Easy Web Views in Flutter on Web and Mobile!
 - Supports change in url
 - Selectable Text
 
+Online Demo: https://rodydavis.github.io/easy_web_view
+
 ## Getting Started
 
 Setup iOS Info.plist
