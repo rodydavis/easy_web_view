@@ -12,6 +12,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isMarkdown = false;
   bool _useWidgets = false;
   bool _editing = false;
+  bool _isSelectable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +76,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (mounted)
                         setState(() {
                           _useWidgets = val;
+                        });
+                    },
+                  ),
+                  SwitchListTile(
+                    title: Text('Selectable Text'),
+                    value: _isSelectable,
+                    onChanged: (val) {
+                      if (mounted)
+                        setState(() {
+                          _isSelectable = val;
                         });
                     },
                   ),

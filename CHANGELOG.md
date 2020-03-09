@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Adding Selectable Text
+
 ## 1.1.0
 
 * Adding Markdown Source

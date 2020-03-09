@@ -13,6 +13,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.isMarkdown = false,
     this.convertToWidets = false,
     this.headers = const {},
+    this.widgetsTextSelectable = false,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
 
@@ -42,6 +43,9 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final Map<String, String> headers;
+
+  @override
+  final bool widgetsTextSelectable;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {

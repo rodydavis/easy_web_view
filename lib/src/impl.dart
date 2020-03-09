@@ -13,6 +13,7 @@ class EasyWebViewImpl {
   final bool isHtml;
   final bool convertToWidets;
   final Map<String, String> headers;
+  final bool widgetsTextSelectable;
 
   EasyWebViewImpl({
     @required this.src,
@@ -22,6 +23,7 @@ class EasyWebViewImpl {
     this.isHtml = false,
     this.isMarkdown = false,
     this.convertToWidets = false,
+    this.widgetsTextSelectable = false,
     this.headers,
   }) : assert((isHtml && isMarkdown) == false);
 
@@ -94,10 +96,12 @@ class RemoteMarkdown extends StatelessWidget {
     Key key,
     @required this.src,
     @required this.headers,
+    @required this.isSelectable,
   }) : super(key: key);
 
   final String src;
   final Map<String, String> headers;
+  final bool isSelectable;
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +118,7 @@ class RemoteMarkdown extends StatelessWidget {
           }
           return LocalMarkdown(
             data: content,
+            isSelectable: isSelectable,
           );
         }
         return Center(child: Icon(Icons.error));
@@ -124,16 +129,19 @@ class RemoteMarkdown extends StatelessWidget {
 
 class LocalMarkdown extends StatelessWidget {
   final String data;
+  final bool isSelectable;
 
   const LocalMarkdown({
     Key key,
     @required this.data,
+    @required this.isSelectable,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Markdown(
       data: data,
       onTapLink: launch,
+      selectable: isSelectable,
     );
   }
 }

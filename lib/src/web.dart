@@ -18,6 +18,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.isMarkdown = false,
     this.convertToWidets = false,
     this.headers = const {},
+    this.widgetsTextSelectable = false,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
 
@@ -47,6 +48,9 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final Map<String, String> headers;
+
+  @override
+  final bool widgetsTextSelectable;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
@@ -79,6 +83,7 @@ class _EasyWebViewState extends State<EasyWebView> {
             return RemoteMarkdown(
               src: src,
               headers: widget.headers,
+              isSelectable: widget.widgetsTextSelectable,
             );
           }
           String _markdown = '';
@@ -89,7 +94,10 @@ class _EasyWebViewState extends State<EasyWebView> {
             src = EasyWebViewImpl.wrapHtml(src);
             _markdown = EasyWebViewImpl.html2Md(src);
           }
-          return LocalMarkdown(data: _markdown);
+          return LocalMarkdown(
+            data: _markdown,
+            isSelectable: widget.widgetsTextSelectable,
+          );
         }
         _setup(src, w, h);
         return AbsorbPointer(

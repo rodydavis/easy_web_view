@@ -13,6 +13,7 @@ Easy Web Views in Flutter on Web and Mobile!
 - Markdown -> Html
 - Html -> Markdown
 - Supports change in url
+- Selectable Text
 
 ## Getting Started
 
