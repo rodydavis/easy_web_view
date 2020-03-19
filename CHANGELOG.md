@@ -1,3 +1,7 @@
+## 1.1.2
+
+* Adding RepaintBoundary
+
 ## 1.1.1
 
 * Adding Selectable Text
