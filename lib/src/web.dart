@@ -112,13 +112,18 @@ class _EasyWebViewState extends State<EasyWebView> {
     );
   }
 
-  static html.IFrameElement _iframeElement = html.IFrameElement();
+  static Map<Key, html.IFrameElement> _iframeElementMap =
+      Map<Key, html.IFrameElement>();
 
   void _setup(String src, num width, num height) {
     final src = widget.src;
+    print(widget.key.toString());
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory('iframe-$src', (int viewId) {
-      final element = _iframeElement
+      if (_iframeElementMap[widget.key] == null) {
+        _iframeElementMap[widget.key] = html.IFrameElement();
+      }
+      final element = _iframeElementMap[widget.key]
         ..style.border = '0'
         ..allowFullscreen = widget.webAllowFullScreen
         ..height = height.toInt().toString()
