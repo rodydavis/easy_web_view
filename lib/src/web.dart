@@ -2,8 +2,6 @@ import 'dart:html' as html;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'impl.dart';
 
@@ -112,13 +110,16 @@ class _EasyWebViewState extends State<EasyWebView> {
     );
   }
 
-  static html.IFrameElement _iframeElement = html.IFrameElement();
+  static final _iframeElementMap = Map<Key, html.IFrameElement>();
 
   void _setup(String src, num width, num height) {
     final src = widget.src;
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory('iframe-$src', (int viewId) {
-      final element = _iframeElement
+      if (_iframeElementMap[widget.key] == null) {
+        _iframeElementMap[widget.key] = html.IFrameElement();
+      }
+      final element = _iframeElementMap[widget.key]
         ..style.border = '0'
         ..allowFullscreen = widget.webAllowFullScreen
         ..height = height.toInt().toString()
@@ -137,12 +138,5 @@ class _EasyWebViewState extends State<EasyWebView> {
       }
       return element;
     });
-  }
-
-  Widget _buildMarkdown(String src) {
-    return Markdown(
-      data: src,
-      onTapLink: launch,
-    );
   }
 }

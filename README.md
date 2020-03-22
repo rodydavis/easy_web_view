@@ -14,6 +14,7 @@ Easy Web Views in Flutter on Web and Mobile!
 - Html -> Markdown
 - Supports change in url
 - Selectable Text
+- Supports multiple views on the same screen if you provide a unique key
 
 Online Demo: https://rodydavis.github.io/easy_web_view
 

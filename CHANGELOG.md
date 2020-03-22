@@ -1,3 +1,9 @@
+## 1.2.0
+
+* Support for multiple WebViews on the same screen
+  thanks to @MypaceEngine
+* To have multiple views you need to add a unique key
+
 ## 1.1.2
 
 * Adding RepaintBoundary
