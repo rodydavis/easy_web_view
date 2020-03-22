@@ -19,6 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _editing = false;
   bool _isSelectable = false;
 
+  bool open = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text('Easy Web View'),
           leading: IconButton(
             icon: Icon(Icons.access_time),
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                print("Click!");
+                open = !open;
+              });
+            },
+
             //tooltip: "Menu",
           ),
           actions: <Widget>[
@@ -138,15 +146,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Expanded(
                           flex: 1,
-                          child: EasyWebView(
-                              src: src3,
-                              isHtml: _isHtml,
-                              isMarkdown: _isMarkdown,
-                              convertToWidets: _useWidgets,
-                              key: key3
-                              // width: 100,
-                              // height: 100,
-                              )),
+                          child: Container(
+                              width: (open) ? 500 : 0,
+                              child: EasyWebView(
+                                  src: src3,
+                                  isHtml: _isHtml,
+                                  isMarkdown: _isMarkdown,
+                                  convertToWidets: _useWidgets,
+                                  key: key3
+                                  // width: 100,
+                                  // height: 100,
+                                  ))),
                     ],
                   )
                 ],
