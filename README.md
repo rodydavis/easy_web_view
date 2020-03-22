@@ -4,8 +4,8 @@
 
 # Difference from original (https://github.com/rodydavis/easy_web_view)
 
-- Support to display multi webview panel at once
-- Add example of multi webview and changing dynamic size (include 0).
+- Supports to display multi webview panel at once
+- Adds example of multi webview and dynamic changing size (include 0).
 
 # easy_web_view
 
