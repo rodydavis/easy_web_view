@@ -47,4 +47,4 @@ For Loading a new url or changing width/height just call setState!
 ## Screenshots
 
 ![](https://github.com/rodydavis/easy_web_view/blob/master/doc/screenshots/mobile.png?raw=true)
-![](https://github.com/rodydavis/easy_web_view/blob/master/doc/screenshots/web.png?raw=true)
+![](https://github.com/MypaceEngine/easy_web_view/blob/master/doc/screenshots/web.png?raw=true)
