@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -15,6 +17,9 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.convertToWidets = false,
     this.headers = const {},
     this.widgetsTextSelectable = false,
+    this.backgroundColor,
+    this.gestureRecognizers,
+    this.onLoaded,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
 
@@ -47,6 +52,15 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final bool widgetsTextSelectable;
+
+  @override
+  final Color backgroundColor;
+
+  @override
+  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
+
+  @override
+  final VoidCallback onLoaded;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
@@ -107,13 +121,20 @@ class _EasyWebViewState extends State<EasyWebView> {
             isSelectable: widget.widgetsTextSelectable,
           );
         }
-        return WebView(
-          key: widget?.key,
-          initialUrl: _updateUrl(src),
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (val) {
-            _controller = val;
-          },
+        return Container(
+          color: widget?.backgroundColor,
+          child: WebView(
+            key: widget?.key,
+            gestureRecognizers: widget?.gestureRecognizers,
+            initialUrl: _updateUrl(src),
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (val) {
+              _controller = val;
+              if (widget?.onLoaded != null) {
+                widget.onLoaded();
+              }
+            },
+          ),
         );
       },
     );

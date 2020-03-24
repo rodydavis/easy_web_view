@@ -1,4 +1,6 @@
 import 'package:easy_web_view/easy_web_view.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,6 +40,24 @@ class _HomeScreenState extends State<HomeScreen> {
             //tooltip: "Menu",
           ),
           actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.info_outline),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text('Info'),
+                          content: Text('This is a dialog!'),
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: () => Navigator.maybePop(context),
+                              child: Text('Ok'),
+                            ),
+                          ],
+                        ));
+              },
+              tooltip: "Dialog",
+            ),
             Builder(builder: (context) {
               return IconButton(
                 icon: Icon(_editing ? Icons.close : Icons.settings),
@@ -116,15 +136,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       Expanded(
                           flex: 1,
-                          child: EasyWebView(
-                              src: src,
-                              isHtml: _isHtml,
-                              isMarkdown: _isMarkdown,
-                              convertToWidets: _useWidgets,
-                              key: key
-                              // width: 100,
-                              // height: 100,
-                              )),
+                          child: AbsorbPointer(
+                            absorbing: true,
+                            child: EasyWebView(
+                                src: src,
+                                gestureRecognizers: {
+                                  Factory<VerticalDragGestureRecognizer>(
+                                    () => VerticalDragGestureRecognizer()
+                                      ..onUpdate = (_) {},
+                                  )
+                                },
+                                isHtml: _isHtml,
+                                isMarkdown: _isMarkdown,
+                                convertToWidets: _useWidgets,
+                                key: key
+                                // width: 100,
+                                // height: 100,
+                                ),
+                          )),
                       Expanded(
                           flex: 1,
                           child: EasyWebView(

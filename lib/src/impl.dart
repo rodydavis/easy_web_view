@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:html2md/html2md.dart' as html2md;
@@ -14,6 +16,9 @@ class EasyWebViewImpl {
   final bool convertToWidets;
   final Map<String, String> headers;
   final bool widgetsTextSelectable;
+  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
+  final VoidCallback onLoaded;
+  final Color backgroundColor;
 
   EasyWebViewImpl({
     @required this.src,
@@ -25,6 +30,9 @@ class EasyWebViewImpl {
     this.convertToWidets = false,
     this.widgetsTextSelectable = false,
     this.headers,
+    this.onLoaded,
+    this.gestureRecognizers,
+    this.backgroundColor,
   }) : assert((isHtml && isMarkdown) == false);
 
   static String wrapHtml(String src) {

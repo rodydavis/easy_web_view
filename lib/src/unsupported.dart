@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'impl.dart';
@@ -14,6 +16,9 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.convertToWidets = false,
     this.headers = const {},
     this.widgetsTextSelectable = false,
+    this.backgroundColor,
+    this.gestureRecognizers,
+    this.onLoaded,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
 
@@ -46,6 +51,15 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final bool widgetsTextSelectable;
+
+  @override
+  final Color backgroundColor;
+
+  @override
+  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
+
+  @override
+  final VoidCallback onLoaded;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
