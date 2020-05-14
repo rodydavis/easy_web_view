@@ -14,7 +14,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.webAllowFullScreen = true,
     this.isHtml = false,
     this.isMarkdown = false,
-    this.convertToWidets = false,
+    this.convertToWidgets = false,
     this.headers = const {},
     this.widgetsTextSelectable = false,
   })  : assert((isHtml && isMarkdown) == false),
@@ -76,7 +76,7 @@ class _EasyWebViewState extends State<EasyWebView> {
       height: widget?.height,
       builder: (w, h) {
         String src = widget.src;
-        if (widget.convertToWidets) {
+        if (widget.convertToWidgets) {
           if (EasyWebViewImpl.isUrl(src)) {
             return RemoteMarkdown(
               src: src,
