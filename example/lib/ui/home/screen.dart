@@ -10,9 +10,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String src = 'https://flutter.dev';
   String src2 = 'https://flutter.dev/community';
   String src3 = 'http://www.youtube.com/embed/IyFZznAk69U';
-  static Key key = UniqueKey();
-  static Key key2 = UniqueKey();
-  static Key key3 = UniqueKey();
+  static ValueKey key = ValueKey('key_0');
+  static ValueKey key2 = ValueKey('key_1');
+  static ValueKey key3 = ValueKey('key_2');
   bool _isHtml = false;
   bool _isMarkdown = false;
   bool _useWidgets = false;
@@ -118,24 +118,31 @@ class _HomeScreenState extends State<HomeScreen> {
                           flex: 1,
                           child: EasyWebView(
                               src: src,
+                              onLoaded: () {
+                                print('$key: Loaded: $src');
+                              },
                               isHtml: _isHtml,
                               isMarkdown: _isMarkdown,
-                              convertToWidets: _useWidgets,
+                              convertToWidgets: _useWidgets,
                               key: key
                               // width: 100,
                               // height: 100,
                               )),
                       Expanded(
-                          flex: 1,
-                          child: EasyWebView(
-                              src: src2,
-                              isHtml: _isHtml,
-                              isMarkdown: _isMarkdown,
-                              convertToWidets: _useWidgets,
-                              key: key2
-                              // width: 100,
-                              // height: 100,
-                              )),
+                        flex: 1,
+                        child: EasyWebView(
+                            onLoaded: () {
+                              print('$key2: Loaded: $src2');
+                            },
+                            src: src2,
+                            isHtml: _isHtml,
+                            isMarkdown: _isMarkdown,
+                            convertToWidgets: _useWidgets,
+                            key: key2
+                            // width: 100,
+                            // height: 100,
+                            ),
+                      ),
                     ],
                   ),
                   Column(
@@ -147,16 +154,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                           flex: 1,
                           child: Container(
-                              width: (open) ? 500 : 0,
-                              child: EasyWebView(
-                                  src: src3,
-                                  isHtml: _isHtml,
-                                  isMarkdown: _isMarkdown,
-                                  convertToWidets: _useWidgets,
-                                  key: key3
-                                  // width: 100,
-                                  // height: 100,
-                                  ))),
+                            width: (open) ? 500 : 0,
+                            child: EasyWebView(
+                                src: src3,
+                                onLoaded: () {
+                                  print('$key3: Loaded: $src3');
+                                },
+                                isHtml: _isHtml,
+                                isMarkdown: _isMarkdown,
+                                convertToWidgets: _useWidgets,
+                                key: key3
+                                // width: 100,
+                                // height: 100,
+                                ),
+                          )),
                     ],
                   )
                 ],

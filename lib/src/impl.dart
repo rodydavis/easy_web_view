@@ -11,18 +11,20 @@ class EasyWebViewImpl {
   final bool webAllowFullScreen;
   final bool isMarkdown;
   final bool isHtml;
-  final bool convertToWidets;
+  final bool convertToWidgets;
   final Map<String, String> headers;
   final bool widgetsTextSelectable;
+  final void Function() onLoaded;
 
   EasyWebViewImpl({
     @required this.src,
     this.width,
     this.height,
+    @required this.onLoaded,
     this.webAllowFullScreen = true,
     this.isHtml = false,
     this.isMarkdown = false,
-    this.convertToWidets = false,
+    this.convertToWidgets = false,
     this.widgetsTextSelectable = false,
     this.headers,
   }) : assert((isHtml && isMarkdown) == false);

@@ -17,6 +17,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.convertToWidgets = false,
     this.headers = const {},
     this.widgetsTextSelectable = false,
+    @required this.onLoaded,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
 
@@ -42,16 +43,33 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   final bool isHtml;
 
   @override
-  final bool convertToWidets;
+  final bool convertToWidgets;
 
   @override
   final Map<String, String> headers;
 
   @override
   final bool widgetsTextSelectable;
+
+  @override
+  final void Function() onLoaded;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
+  @override
+  void initState() {
+    widget?.onLoaded();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final _iframe = _iframeElementMap[widget.key];
+      _iframe.onLoad.listen((event) {
+        if (widget?.onLoaded != null) {
+          widget.onLoaded();
+        }
+      });
+    });
+    super.initState();
+  }
+
   @override
   void didUpdateWidget(EasyWebView oldWidget) {
     if (oldWidget.height != widget.height) {

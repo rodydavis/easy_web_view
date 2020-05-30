@@ -1,3 +1,8 @@
+## 1.3.0
+
+* Fixing Typo
+* Added onLoaded Callback
+
 ## 1.2.0
 
 * Support for multiple WebViews on the same screen

@@ -12,8 +12,9 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.webAllowFullScreen = true,
     this.isHtml = false,
     this.isMarkdown = false,
-    this.convertToWidets = false,
+    this.convertToWidgets = false,
     this.headers = const {},
+    @required this.onLoaded,
     this.widgetsTextSelectable = false,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
@@ -40,13 +41,16 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   final bool isHtml;
 
   @override
-  final bool convertToWidets;
+  final bool convertToWidgets;
 
   @override
   final Map<String, String> headers;
 
   @override
   final bool widgetsTextSelectable;
+
+  @override
+  final void Function() onLoaded;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
@@ -76,6 +80,9 @@ class _EasyWebViewState extends State<EasyWebView> {
       _src = "data:text/html;charset=utf-8," +
           Uri.encodeComponent(EasyWebViewImpl.wrapHtml(url));
     }
+    if (widget?.onLoaded != null) {
+      widget.onLoaded();
+    }
     return _src;
   }
 
@@ -86,7 +93,7 @@ class _EasyWebViewState extends State<EasyWebView> {
       height: widget?.height,
       builder: (w, h) {
         String src = widget.src;
-        if (widget.convertToWidets) {
+        if (widget.convertToWidgets) {
           if (EasyWebViewImpl.isUrl(src)) {
             return RemoteMarkdown(
               src: src,
@@ -113,6 +120,9 @@ class _EasyWebViewState extends State<EasyWebView> {
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (val) {
             _controller = val;
+            if (widget?.onLoaded != null) {
+              widget.onLoaded();
+            }
           },
         );
       },
