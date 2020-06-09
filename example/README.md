@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
               src: src,
               isHtml: _isHtml,
               isMarkdown: _isMarkdown,
-              convertToWidets: _useWidgets,
+              convertToWidgets: _useWidgets,
               // width: 100,
               // height: 100,
             ),
