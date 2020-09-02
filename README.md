@@ -34,7 +34,7 @@ For Loading a new url or changing width/height just call setState!
   src: src,
   isHtml: false, // Use Html syntax
   isMarkdown: false, // Use markdown syntax
-  convertToWidets: false, // Try to convert to flutter widgets
+  convertToWidgets: false, // Try to convert to flutter widgets
   // width: 100,
   // height: 100,
 )
