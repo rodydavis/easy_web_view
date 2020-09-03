@@ -14,12 +14,15 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.convertToWidgets = false,
     this.headers = const {},
     @required this.onLoaded,
+    this.placeholder,
     this.widgetsTextSelectable = false,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
 
   @override
   _EasyWebViewState createState() => _EasyWebViewState();
+
+  final Widget placeholder;
 
   @override
   final num height;
@@ -58,7 +61,7 @@ class _EasyWebViewState extends State<EasyWebView> {
     return OptionalSizedChild(
       width: widget?.width,
       height: widget?.height,
-      builder: (w, h) => Placeholder(),
+      builder: (w, h) => widget?.placeholder ?? Placeholder(),
     );
   }
 }
