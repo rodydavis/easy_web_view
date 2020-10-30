@@ -142,7 +142,7 @@ class LocalMarkdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Markdown(
       data: data,
-      onTapLink: launch,
+      onTapLink: (_, url, __) => launch(url),
       selectable: isSelectable,
     );
   }
