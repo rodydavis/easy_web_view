@@ -61,11 +61,13 @@ class _EasyWebViewState extends State<EasyWebView> {
     widget?.onLoaded();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final _iframe = _iframeElementMap[widget.key];
-      _iframe.onLoad.listen((event) {
-        if (widget?.onLoaded != null) {
-          widget.onLoaded();
-        }
-      });
+      if(_iframe != null) {
+        _iframe.onLoad.listen((event) {
+          if (widget?.onLoaded != null) {
+            widget.onLoaded();
+          }
+        });
+      }
     });
     super.initState();
   }
