@@ -1,3 +1,7 @@
+## 1.3.1
+
+* Removing cupertino_icons
+
 ## 1.3.0
 
 * Fixing Typo
