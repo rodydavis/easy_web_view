@@ -117,17 +117,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                           flex: 1,
                           child: EasyWebView(
-                              src: src,
-                              onLoaded: () {
-                                print('$key: Loaded: $src');
-                              },
-                              isHtml: _isHtml,
-                              isMarkdown: _isMarkdown,
-                              convertToWidgets: _useWidgets,
-                              key: key
-                              // width: 100,
-                              // height: 100,
-                              )),
+                            src: src,
+                            onLoaded: () {
+                              print('$key: Loaded: $src');
+                            },
+                            isHtml: _isHtml,
+                            isMarkdown: _isMarkdown,
+                            convertToWidgets: _useWidgets,
+                            key: key,
+                            widgetsTextSelectable: _isSelectable,
+                            // width: 100,
+                            // height: 100,
+                          )),
                       Expanded(
                         flex: 1,
                         child: EasyWebView(
@@ -138,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             isHtml: _isHtml,
                             isMarkdown: _isMarkdown,
                             convertToWidgets: _useWidgets,
+                            widgetsTextSelectable: _isSelectable,
                             key: key2
                             // width: 100,
                             // height: 100,
@@ -163,6 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 isHtml: _isHtml,
                                 isMarkdown: _isMarkdown,
                                 convertToWidgets: _useWidgets,
+                                widgetsTextSelectable: _isSelectable,
                                 key: key3
                                 // width: 100,
                                 // height: 100,
