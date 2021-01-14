@@ -1,3 +1,4 @@
+import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
 
 import 'impl.dart';
@@ -15,6 +16,8 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.headers = const {},
     @required this.onLoaded,
     this.widgetsTextSelectable = false,
+    this.crossWindowEvents = const [],
+    this.webNavigationDelegate,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
 
@@ -50,6 +53,12 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final void Function() onLoaded;
+
+  @override
+  final List<CrossWindowEvent> crossWindowEvents;
+
+  @override
+  final WebNavigationDelegate webNavigationDelegate;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
