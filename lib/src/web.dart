@@ -7,8 +7,9 @@ import 'impl.dart';
 
 class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   const EasyWebView({
-    Key key,
-    @required this.src,
+    Key? key,
+    required this.src,
+    required this.onLoaded,
     this.height,
     this.width,
     this.webAllowFullScreen = true,
@@ -17,7 +18,6 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.convertToWidgets = false,
     this.headers = const {},
     this.widgetsTextSelectable = false,
-    @required this.onLoaded,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
 
@@ -25,13 +25,13 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   _EasyWebViewState createState() => _EasyWebViewState();
 
   @override
-  final num height;
+  final double? height;
 
   @override
   final String src;
 
   @override
-  final num width;
+  final double? width;
 
   @override
   final bool webAllowFullScreen;
@@ -59,9 +59,9 @@ class _EasyWebViewState extends State<EasyWebView> {
   @override
   void initState() {
     widget?.onLoaded();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       final _iframe = _iframeElementMap[widget.key];
-      if(_iframe != null) {
+      if (_iframe != null) {
         _iframe.onLoad.listen((event) {
           if (widget?.onLoaded != null) {
             widget.onLoaded();
@@ -132,18 +132,19 @@ class _EasyWebViewState extends State<EasyWebView> {
 
   static final _iframeElementMap = Map<Key, html.IFrameElement>();
 
-  void _setup(String src, num width, num height) {
+  void _setup(String src, double? width, double? height) {
     final src = widget.src;
+    final key = widget.key ?? ValueKey('');
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory('iframe-$src', (int viewId) {
-      if (_iframeElementMap[widget.key] == null) {
-        _iframeElementMap[widget.key] = html.IFrameElement();
+      if (_iframeElementMap[key] == null) {
+        _iframeElementMap[key] = html.IFrameElement();
       }
-      final element = _iframeElementMap[widget.key]
+      final element = _iframeElementMap[key]!
         ..style.border = '0'
         ..allowFullscreen = widget.webAllowFullScreen
-        ..height = height.toInt().toString()
-        ..width = width.toInt().toString();
+        ..height = height?.toInt().toString()
+        ..width = width?.toInt().toString();
       if (src != null) {
         String _src = src;
         if (widget.isMarkdown) {
