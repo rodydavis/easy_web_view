@@ -58,7 +58,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   final List<CrossWindowEvent> crossWindowEvents;
 
   @override
-  final WebNavigationDelegate webNavigationDelegate;
+  final WebNavigationDelegate? webNavigationDelegate;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {

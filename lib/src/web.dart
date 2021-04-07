@@ -21,7 +21,6 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.headers = const {},
     this.widgetsTextSelectable = false,
     this.crossWindowEvents = const [],
-    @required this.onLoaded,
     this.webNavigationDelegate,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
@@ -63,7 +62,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   final List<CrossWindowEvent> crossWindowEvents;
 
   @override
-  final WebNavigationDelegate webNavigationDelegate;
+  final WebNavigationDelegate? webNavigationDelegate;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
@@ -72,8 +71,8 @@ class _EasyWebViewState extends State<EasyWebView> {
     widget.onLoaded();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       final _iframe = _iframeElementMap[widget.key];
-      _iframe.onLoad.listen((event) {
-        widget?.onLoaded();
+      _iframe?.onLoad.listen((event) {
+        widget.onLoaded();
       });
     });
     super.initState();
@@ -139,15 +138,16 @@ class _EasyWebViewState extends State<EasyWebView> {
 
   static final _iframeElementMap = Map<Key, html.IFrameElement>();
 
-  void _setup(String src, double? width, double? height) {
+  void _setup(String? src, double width, double height) {
     final key = widget.key ?? ValueKey('');
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory('iframe-$src', (int viewId) {
       if (_iframeElementMap[key] == null) {
         _iframeElementMap[key] = html.IFrameElement();
       }
-      
-      final element = _iframeElementMap[widget.key]
+      final element = _iframeElementMap[widget.key];
+
+      element!
         ..style.border = '0'
         ..allowFullscreen = widget.webAllowFullScreen
         ..height = height.toInt().toString()
@@ -155,8 +155,8 @@ class _EasyWebViewState extends State<EasyWebView> {
 
       html.window.addEventListener('onbeforeunload', (event) async {
         final beforeUnloadEvent = (event as html.BeforeUnloadEvent);
-
-        final webNavigationDecision = await widget?.webNavigationDelegate(
+        if (widget.webNavigationDelegate == null) return;
+        final webNavigationDecision = await widget.webNavigationDelegate!(
             WebNavigationRequest(html.window.location.href));
         if (webNavigationDecision == WebNavigationDecision.prevent) {
           // Cancel the event
@@ -178,9 +178,8 @@ class _EasyWebViewState extends State<EasyWebView> {
           });
         });
       }
-
+      String _src = src ?? '';
       if (src != null) {
-        String _src = src;
         if (widget.isMarkdown) {
           _src = "data:text/html;charset=utf-8," +
               Uri.encodeComponent(EasyWebViewImpl.md2Html(src));
@@ -189,7 +188,6 @@ class _EasyWebViewState extends State<EasyWebView> {
           _src = "data:text/html;charset=utf-8," +
               Uri.encodeComponent(EasyWebViewImpl.wrapHtml(src));
         }
-        element..src = _src;
       }
       element..src = _src;
       return element;

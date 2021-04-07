@@ -61,7 +61,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   final List<CrossWindowEvent> crossWindowEvents;
 
   @override
-  final WebNavigationDelegate webNavigationDelegate;
+  final WebNavigationDelegate? webNavigationDelegate;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
@@ -138,14 +138,14 @@ class _EasyWebViewState extends State<EasyWebView> {
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (webViewController) {
             _webViewController = webViewController;
-            widget?.onLoaded();
+            widget.onLoaded();
           },
           navigationDelegate: (navigationRequest) async {
             if (widget.webNavigationDelegate == null) {
               return NavigationDecision.navigate;
             }
 
-            final webNavigationDecision = await widget.webNavigationDelegate(
+            final webNavigationDecision = await widget.webNavigationDelegate!(
                 WebNavigationRequest(navigationRequest.url));
             return (webNavigationDecision == WebNavigationDecision.prevent)
                 ? NavigationDecision.prevent

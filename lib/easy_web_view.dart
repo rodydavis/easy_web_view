@@ -19,5 +19,8 @@ class CrossWindowEvent {
   final String name;
   final Function(dynamic) eventAction;
 
-  CrossWindowEvent({this.name, this.eventAction});
+  CrossWindowEvent({
+    required this.name,
+    required this.eventAction,
+  });
 }

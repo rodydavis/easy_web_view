@@ -17,7 +17,7 @@ class EasyWebViewImpl {
   final bool widgetsTextSelectable;
   final void Function() onLoaded;
   final List<CrossWindowEvent> crossWindowEvents;
-  final WebNavigationDelegate webNavigationDelegate;
+  final WebNavigationDelegate? webNavigationDelegate;
 
   const EasyWebViewImpl({
     Key? key,
@@ -146,7 +146,7 @@ class LocalMarkdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Markdown(
       data: data,
-      onTapLink: (_, url, __) => launch(url),
+      onTapLink: (_, url, __) => url == null ? null : launch(url),
       selectable: isSelectable,
     );
   }
