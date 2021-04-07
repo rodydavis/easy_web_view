@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class EasyWebViewImpl {
   final String src;
-  final num width, height;
+  final num? width, height;
   final bool webAllowFullScreen;
   final bool isMarkdown;
   final bool isHtml;
@@ -19,17 +19,18 @@ class EasyWebViewImpl {
   final List<CrossWindowEvent> crossWindowEvents;
   final WebNavigationDelegate webNavigationDelegate;
 
-  EasyWebViewImpl({
-    @required this.src,
+  const EasyWebViewImpl({
+    Key? key,
+    required this.src,
+    required this.onLoaded,
     this.width,
     this.height,
-    @required this.onLoaded,
     this.webAllowFullScreen = true,
     this.isHtml = false,
     this.isMarkdown = false,
     this.convertToWidgets = false,
     this.widgetsTextSelectable = false,
-    this.headers,
+    this.headers = const {},
     this.crossWindowEvents = const [],
     this.webNavigationDelegate,
   }) : assert((isHtml && isMarkdown) == false);
@@ -65,46 +66,44 @@ $src
 }
 
 class OptionalSizedChild extends StatelessWidget {
-  final num width, height;
-  final Widget Function(num, num) builder;
+  final double? width, height;
+  final Widget Function(double, double) builder;
 
   const OptionalSizedChild({
-    Key key,
-    @required this.width,
-    @required this.height,
-    @required this.builder,
-  }) : super(key: key);
+    required this.width,
+    required this.height,
+    required this.builder,
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (width == null || height == null) {
-      return LayoutBuilder(
-        builder: (context, dimens) {
-          final w = width ?? dimens.maxWidth;
-          final h = height ?? dimens.maxHeight;
-          return SizedBox(
-            width: w,
-            height: h,
-            child: builder(w, h),
-          );
-        },
+    if (width != null && height != null) {
+      return SizedBox(
+        width: width,
+        height: height,
+        child: builder(width!, height!),
       );
     }
-    return SizedBox(
-      width: width,
-      height: height,
-      child: builder(width, height),
+    return LayoutBuilder(
+      builder: (context, dimens) {
+        final w = width ?? dimens.maxWidth;
+        final h = height ?? dimens.maxHeight;
+        return SizedBox(
+          width: w,
+          height: h,
+          child: builder(w, h),
+        );
+      },
     );
   }
 }
 
 class RemoteMarkdown extends StatelessWidget {
   const RemoteMarkdown({
-    Key key,
-    @required this.src,
-    @required this.headers,
-    @required this.isSelectable,
-  }) : super(key: key);
+    required this.src,
+    required this.headers,
+    required this.isSelectable,
+  });
 
   final String src;
   final Map<String, String> headers;
@@ -113,13 +112,13 @@ class RemoteMarkdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<http.Response>(
-      future: http.get(src, headers: headers),
+      future: http.get(Uri.parse(src), headers: headers),
       builder: (context, response) {
         if (!response.hasData) {
           return Center(child: CircularProgressIndicator());
         }
-        if (response.data.statusCode == 200) {
-          String content = response.data.body;
+        if (response.data?.statusCode == 200) {
+          String content = response.data!.body;
           if (EasyWebViewImpl.isValidHtml(src)) {
             content = EasyWebViewImpl.html2Md(content);
           }
@@ -139,10 +138,10 @@ class LocalMarkdown extends StatelessWidget {
   final bool isSelectable;
 
   const LocalMarkdown({
-    Key key,
-    @required this.data,
-    @required this.isSelectable,
-  }) : super(key: key);
+    required this.data,
+    required this.isSelectable,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Markdown(
