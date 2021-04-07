@@ -1,3 +1,12 @@
+## 1.5.0
+
+* Updated dependencies in pubspec.yaml
+* Changed impl.dart to use the new version of flutter_markdown
+* Removed cupertino_icons
+* Changed .gitignore
+* Added analysis_options.yaml to ignore undefined_prefixed_name warning
+* Updating example
+
 ## 1.4.0-nullsafety
 
 * Null Safety
