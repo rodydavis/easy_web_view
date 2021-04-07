@@ -56,8 +56,8 @@ class _EasyWebViewState extends State<EasyWebView> {
   @override
   Widget build(BuildContext context) {
     return OptionalSizedChild(
-      width: widget?.width,
-      height: widget?.height,
+      width: widget.width,
+      height: widget.height,
       builder: (w, h) => Placeholder(),
     );
   }

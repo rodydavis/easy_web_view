@@ -80,17 +80,15 @@ class _EasyWebViewState extends State<EasyWebView> {
       _src = "data:text/html;charset=utf-8," +
           Uri.encodeComponent(EasyWebViewImpl.wrapHtml(url));
     }
-    if (widget?.onLoaded != null) {
-      widget.onLoaded();
-    }
+    widget.onLoaded();
     return _src;
   }
 
   @override
   Widget build(BuildContext context) {
     return OptionalSizedChild(
-      width: widget?.width,
-      height: widget?.height,
+      width: widget.width,
+      height: widget.height,
       builder: (w, h) {
         String src = widget.src;
         if (widget.convertToWidgets) {
@@ -115,14 +113,12 @@ class _EasyWebViewState extends State<EasyWebView> {
           );
         }
         return WebView(
-          key: widget?.key,
+          key: widget.key,
           initialUrl: _updateUrl(src),
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (val) {
             _controller = val;
-            if (widget?.onLoaded != null) {
-              widget.onLoaded();
-            }
+            widget.onLoaded();
           },
         );
       },
