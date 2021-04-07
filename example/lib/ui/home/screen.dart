@@ -14,10 +14,12 @@ class _HomeScreenState extends State<HomeScreen> {
   static ValueKey key2 = ValueKey('key_1');
   static ValueKey key3 = ValueKey('key_2');
   bool _isHtml = false;
+  bool _blockNavigation = false;
   bool _isMarkdown = false;
   bool _useWidgets = false;
   bool _editing = false;
   bool _isSelectable = false;
+  bool _showSummernote = false;
 
   bool open = false;
 
@@ -72,6 +74,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                     SwitchListTile(
+                      title: Text('Block Html Navigation'),
+                      value: _blockNavigation,
+                      onChanged: (val) {
+                        if (mounted)
+                          setState(() {
+                            _blockNavigation = val;
+                          });
+                      },
+                    ),
+                    SwitchListTile(
                       title: Text('Markdown Content'),
                       value: _isMarkdown,
                       onChanged: (val) {
@@ -107,6 +119,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
                       },
                     ),
+                    SwitchListTile(
+                      title: Text('Show Summernote'),
+                      value: _showSummernote,
+                      onChanged: (val) {
+                        if (mounted)
+                          setState(() {
+                            _showSummernote = val;
+                            if (val) {
+                              _isMarkdown = false;
+                              _isHtml = true;
+                              src = summernoteHtml;
+                            } else {
+                              src = url;
+                            }
+                          });
+                      },
+                    ),
                   ],
                 ),
               )
@@ -117,31 +146,46 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                           flex: 1,
                           child: EasyWebView(
-                              src: src,
-                              onLoaded: () {
-                                print('$key: Loaded: $src');
-                              },
-                              isHtml: _isHtml,
-                              isMarkdown: _isMarkdown,
-                              convertToWidgets: _useWidgets,
-                              key: key
-                              // width: 100,
-                              // height: 100,
-                              )),
-                      Expanded(
-                        flex: 1,
-                        child: EasyWebView(
+                            src: src,
                             onLoaded: () {
-                              print('$key2: Loaded: $src2');
+                              print('$key: Loaded: $src');
                             },
-                            src: src2,
                             isHtml: _isHtml,
                             isMarkdown: _isMarkdown,
                             convertToWidgets: _useWidgets,
-                            key: key2
+                            key: key,
+                            widgetsTextSelectable: _isSelectable,
+                            webNavigationDelegate: (_) => _blockNavigation
+                                ? WebNavigationDecision.prevent
+                                : WebNavigationDecision.navigate,
+                            crossWindowEvents: [
+                              CrossWindowEvent(
+                                  name: 'Test',
+                                  eventAction: (eventMessage) {
+                                    print('Event message: $eventMessage');
+                                  }),
+                            ],
                             // width: 100,
                             // height: 100,
-                            ),
+                          )),
+                      Expanded(
+                        flex: 1,
+                        child: EasyWebView(
+                          onLoaded: () {
+                            print('$key2: Loaded: $src2');
+                          },
+                          src: src2,
+                          isHtml: _isHtml,
+                          isMarkdown: _isMarkdown,
+                          convertToWidgets: _useWidgets,
+                          widgetsTextSelectable: _isSelectable,
+                          key: key2,
+                          webNavigationDelegate: (_) => _blockNavigation
+                              ? WebNavigationDecision.prevent
+                              : WebNavigationDecision.navigate,
+                          // width: 100,
+                          // height: 100,
+                        ),
                       ),
                     ],
                   ),
@@ -163,6 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 isHtml: _isHtml,
                                 isMarkdown: _isMarkdown,
                                 convertToWidgets: _useWidgets,
+                                widgetsTextSelectable: _isSelectable,
                                 key: key3
                                 // width: 100,
                                 // height: 100,
@@ -204,4 +249,46 @@ This is a paragraph
 """;
 
   String get url => 'https://flutter.dev';
+
+  String summernoteHtml = '''
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+  </head>
+  <body>
+    <div id="summernote"></div>
+    <script>
+    window.onload = function () {
+      \$('#summernote').summernote({
+        height: 400,
+        tabsize: 2,
+        callbacks: {
+          onChange: function() {
+            \$('#html-content').text(\$('#summernote').summernote('code'));
+            
+            window.parent.postMessage(\$('#summernote').summernote('code'), '*');
+            if (window.Test != null) {
+              window.Test.postMessage(\$('#summernote').summernote('code'));
+            }
+          }
+        },
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          ['insert', ['link', 'picture']],
+          ['view', ['codeview']]
+        ]
+      });
+    }
+    </script>
+    <div id="html-content" style="display: none"></div>
+  </body>
+</html>
+''';
 }

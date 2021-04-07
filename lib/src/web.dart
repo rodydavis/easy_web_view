@@ -2,6 +2,7 @@
 import 'dart:html' as html;
 import 'dart:ui' as ui;
 
+import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
 
 import 'impl.dart';
@@ -19,6 +20,8 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.convertToWidgets = false,
     this.headers = const {},
     this.widgetsTextSelectable = false,
+    this.crossWindowEvents = const [],
+    this.webNavigationDelegate,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
 
@@ -54,6 +57,12 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final void Function() onLoaded;
+
+  @override
+  final List<CrossWindowEvent> crossWindowEvents;
+
+  @override
+  final WebNavigationDelegate? webNavigationDelegate;
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
@@ -62,11 +71,9 @@ class _EasyWebViewState extends State<EasyWebView> {
     widget.onLoaded();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       final _iframe = _iframeElementMap[widget.key];
-      if (_iframe != null) {
-        _iframe.onLoad.listen((event) {
-          widget.onLoaded();
-        });
-      }
+      _iframe?.onLoad.listen((event) {
+        widget.onLoaded();
+      });
     });
     super.initState();
   }
@@ -131,27 +138,56 @@ class _EasyWebViewState extends State<EasyWebView> {
 
   static final _iframeElementMap = Map<Key, html.IFrameElement>();
 
-  void _setup(String src, double? width, double? height) {
+  void _setup(String? src, double width, double height) {
     final key = widget.key ?? ValueKey('');
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory('iframe-$src', (int viewId) {
       if (_iframeElementMap[key] == null) {
         _iframeElementMap[key] = html.IFrameElement();
       }
-      final element = _iframeElementMap[key]!
+      final element = _iframeElementMap[widget.key];
+
+      element!
         ..style.border = '0'
         ..allowFullscreen = widget.webAllowFullScreen
-        ..height = height?.toInt().toString()
-        ..width = width?.toInt().toString();
+        ..height = height.toInt().toString()
+        ..width = width.toInt().toString();
 
-      String _src = src;
-      if (widget.isMarkdown) {
-        _src = "data:text/html;charset=utf-8," +
-            Uri.encodeComponent(EasyWebViewImpl.md2Html(src));
+      html.window.addEventListener('onbeforeunload', (event) async {
+        final beforeUnloadEvent = (event as html.BeforeUnloadEvent);
+        if (widget.webNavigationDelegate == null) return;
+        final webNavigationDecision = await widget.webNavigationDelegate!(
+            WebNavigationRequest(html.window.location.href));
+        if (webNavigationDecision == WebNavigationDecision.prevent) {
+          // Cancel the event
+          beforeUnloadEvent.preventDefault();
+          // Chrome requires returnValue to be set
+          beforeUnloadEvent.returnValue = '';
+        } else {
+          // Guarantee the browser unload by removing the returnValue property of the event
+          beforeUnloadEvent.returnValue = null;
+        }
+      });
+
+      if (widget.crossWindowEvents.isNotEmpty) {
+        html.window.addEventListener('message', (event) {
+          final eventData = (event as html.MessageEvent).data;
+          widget.crossWindowEvents.forEach((crossWindowEvent) {
+            final crossWindowEventListener = crossWindowEvent.eventAction;
+            crossWindowEventListener(eventData);
+          });
+        });
       }
-      if (widget.isHtml) {
-        _src = "data:text/html;charset=utf-8," +
-            Uri.encodeComponent(EasyWebViewImpl.wrapHtml(src));
+      String _src = src ?? '';
+      if (src != null) {
+        if (widget.isMarkdown) {
+          _src = "data:text/html;charset=utf-8," +
+              Uri.encodeComponent(EasyWebViewImpl.md2Html(src));
+        }
+        if (widget.isHtml) {
+          _src = "data:text/html;charset=utf-8," +
+              Uri.encodeComponent(EasyWebViewImpl.wrapHtml(src));
+        }
       }
       element..src = _src;
       return element;
