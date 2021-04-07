@@ -1,3 +1,7 @@
+## 1.4.0-nullsafety
+
+* Null Safety
+
 ## 1.3.1
 
 * Removing cupertino_icons

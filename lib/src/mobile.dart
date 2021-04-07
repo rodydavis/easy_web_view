@@ -5,8 +5,9 @@ import 'impl.dart';
 
 class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   const EasyWebView({
-    Key key,
-    @required this.src,
+    required this.src,
+    required this.onLoaded,
+    Key? key,
     this.height,
     this.width,
     this.webAllowFullScreen = true,
@@ -14,7 +15,6 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.isMarkdown = false,
     this.convertToWidgets = false,
     this.headers = const {},
-    @required this.onLoaded,
     this.widgetsTextSelectable = false,
   })  : assert((isHtml && isMarkdown) == false),
         super(key: key);
@@ -23,13 +23,13 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   _EasyWebViewState createState() => _EasyWebViewState();
 
   @override
-  final num height;
+  final double? height;
 
   @override
   final String src;
 
   @override
-  final num width;
+  final double? width;
 
   @override
   final bool webAllowFullScreen;
@@ -54,7 +54,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 }
 
 class _EasyWebViewState extends State<EasyWebView> {
-  WebViewController _controller;
+  late WebViewController _controller;
 
   @override
   void didUpdateWidget(EasyWebView oldWidget) {
@@ -80,17 +80,15 @@ class _EasyWebViewState extends State<EasyWebView> {
       _src = "data:text/html;charset=utf-8," +
           Uri.encodeComponent(EasyWebViewImpl.wrapHtml(url));
     }
-    if (widget?.onLoaded != null) {
-      widget.onLoaded();
-    }
+    widget.onLoaded();
     return _src;
   }
 
   @override
   Widget build(BuildContext context) {
     return OptionalSizedChild(
-      width: widget?.width,
-      height: widget?.height,
+      width: widget.width,
+      height: widget.height,
       builder: (w, h) {
         String src = widget.src;
         if (widget.convertToWidgets) {
@@ -115,14 +113,12 @@ class _EasyWebViewState extends State<EasyWebView> {
           );
         }
         return WebView(
-          key: widget?.key,
+          key: widget.key,
           initialUrl: _updateUrl(src),
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (val) {
             _controller = val;
-            if (widget?.onLoaded != null) {
-              widget.onLoaded();
-            }
+            widget.onLoaded();
           },
         );
       },
