@@ -16,7 +16,7 @@ dependencies:
   html2md: ^1.0.1
   url_launcher: ^6.0.3
   http: ^0.13.1
-  permission_handler: ^5.0.1+1
+  permission_handler: ^6.1.3
 
 dev_dependencies:
   flutter_test:
