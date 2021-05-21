@@ -16,7 +16,7 @@ dependencies:
   html2md: ^1.0.1
   url_launcher: ^6.0.3
   http: ^0.13.1
-  permission_handler: ^5.0.1+1
+  permission_handler: ^7.1.0 #Update Last Version By mdpe-ir
 
 dev_dependencies:
   flutter_test:
