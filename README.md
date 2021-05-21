@@ -4,7 +4,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/rodydavis/easy_web_view?color=blue)](https://github.com/rodydavis/easy_web_view)
 [![easy_web_view](https://img.shields.io/pub/v/easy_web_view.svg)](https://pub.dev/packages/easy_web_view)
 
-# easy_web_view
+# easy_web_view With Update Dep
 
 Easy Web Views in Flutter on Web and Mobile!
 
