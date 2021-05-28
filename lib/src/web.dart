@@ -149,7 +149,7 @@ class _EasyWebViewState extends State<EasyWebView> {
 
       element!
         ..style.border = '0'
-        ..style.zIndex = '0'
+        ..style.zIndex = '-999'
         ..allowFullscreen = widget.webAllowFullScreen
         ..height = height.toInt().toString()
         ..width = width.toInt().toString();
