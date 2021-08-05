@@ -55,7 +55,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   final bool widgetsTextSelectable;
 
   @override
-  final void Function() onLoaded;
+  final void Function()? onLoaded;
 
   @override
   final List<CrossWindowEvent> crossWindowEvents;
@@ -100,7 +100,7 @@ class _EasyWebViewState extends State<EasyWebView> {
       _src = "data:text/html;charset=utf-8," +
           Uri.encodeComponent(EasyWebViewImpl.wrapHtml(url));
     }
-    widget.onLoaded();
+    widget.onLoaded?.call();
     return _src;
   }
 
@@ -138,7 +138,7 @@ class _EasyWebViewState extends State<EasyWebView> {
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (webViewController) {
             _webViewController = webViewController;
-            widget.onLoaded();
+            widget.onLoaded?.call();
           },
           navigationDelegate: (navigationRequest) async {
             if (widget.webNavigationDelegate == null) {

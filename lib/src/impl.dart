@@ -15,7 +15,7 @@ class EasyWebViewImpl {
   final bool convertToWidgets;
   final Map<String, String> headers;
   final bool widgetsTextSelectable;
-  final void Function() onLoaded;
+  final void Function()? onLoaded;
   final List<CrossWindowEvent> crossWindowEvents;
   final WebNavigationDelegate? webNavigationDelegate;
 

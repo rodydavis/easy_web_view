@@ -56,7 +56,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   final bool widgetsTextSelectable;
 
   @override
-  final void Function() onLoaded;
+  final void Function()? onLoaded;
 
   @override
   final List<CrossWindowEvent> crossWindowEvents;
@@ -68,11 +68,10 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 class _EasyWebViewState extends State<EasyWebView> {
   @override
   void initState() {
-    widget.onLoaded();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       final _iframe = _iframeElementMap[widget.key];
       _iframe?.onLoad.listen((event) {
-        widget.onLoaded();
+        widget.onLoaded?.call();
       });
     });
     super.initState();
