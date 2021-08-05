@@ -22,7 +22,7 @@ class EasyWebViewImpl {
   const EasyWebViewImpl({
     Key? key,
     required this.src,
-    required this.onLoaded,
+    this.onLoaded,
     this.width,
     this.height,
     this.webAllowFullScreen = true,
