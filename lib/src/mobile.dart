@@ -14,6 +14,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
     this.height,
     this.width,
     this.webAllowFullScreen = true,
+    this.allow = "",
     this.isHtml = false,
     this.isMarkdown = false,
     this.convertToWidgets = false,
@@ -38,6 +39,9 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
 
   @override
   final bool webAllowFullScreen;
+
+  @override
+  final String allow;
 
   @override
   final bool isMarkdown;
