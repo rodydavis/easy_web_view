@@ -34,6 +34,5 @@ abstract class EasyWebViewControllerWrapperBase {
   Future<void> evaluateJSMobile(String js);
   Future<String> evaluateJSWithResMobile(String js);
 
-  // if (_iframe.srcdoc != null && _iframe.srcdoc!.isNotEmpty) {}
   void postMessageWeb(dynamic message, String targetOrigin);
 }
