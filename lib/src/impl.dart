@@ -10,6 +10,7 @@ class EasyWebViewImpl {
   final String src;
   final num? width, height;
   final bool webAllowFullScreen;
+  final String allow;
   final bool isMarkdown;
   final bool isHtml;
   final bool convertToWidgets;
@@ -26,6 +27,7 @@ class EasyWebViewImpl {
     this.onLoaded,
     this.width,
     this.height,
+    this.allow = '',
     this.webAllowFullScreen = true,
     this.isHtml = false,
     this.isMarkdown = false,
