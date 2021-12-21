@@ -15,14 +15,15 @@ class EasyWebViewImpl {
   final bool convertToWidgets;
   final Map<String, String> headers;
   final bool widgetsTextSelectable;
-  final void Function() onLoaded;
+
+  final OnLoaded? onLoaded;
   final List<CrossWindowEvent> crossWindowEvents;
   final WebNavigationDelegate? webNavigationDelegate;
 
   const EasyWebViewImpl({
     Key? key,
     required this.src,
-    required this.onLoaded,
+    this.onLoaded,
     this.width,
     this.height,
     this.webAllowFullScreen = true,

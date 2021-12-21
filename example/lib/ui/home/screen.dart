@@ -1,4 +1,5 @@
 import 'package:easy_web_view/easy_web_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -7,6 +8,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  EasyWebViewControllerWrapperBase? _controller;
+  EasyWebViewControllerWrapperBase? _controller2;
+  EasyWebViewControllerWrapperBase? _controller3;
   String src = 'https://flutter.dev';
   String src2 = 'https://flutter.dev/community';
   String src3 = 'http://www.youtube.com/embed/IyFZznAk69U';
@@ -51,6 +55,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               );
             }),
+            if ((_isHtml || _isMarkdown) && _controller != null)
+              Builder(builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.print),
+                  onPressed: () async {
+                    final _c = _controller!;
+                    if (kIsWeb) {
+                      _c.postMessageWeb('print', '*');
+                    } else {
+                      // await _c.evaluateJSMobile(js);
+                    }
+                  },
+                );
+              }),
           ],
         ),
         body: _editing
@@ -147,7 +165,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           flex: 1,
                           child: EasyWebView(
                             src: src,
-                            onLoaded: () {
+                            onLoaded: (controller) {
+                              setState(() {
+                                _controller = controller;
+                              });
                               print('$key: Loaded: $src');
                             },
                             isHtml: _isHtml,
@@ -171,7 +192,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         flex: 1,
                         child: EasyWebView(
-                          onLoaded: () {
+                          onLoaded: (controller) {
+                            setState(() {
+                              _controller2 = controller;
+                            });
                             print('$key2: Loaded: $src2');
                           },
                           src: src2,
@@ -201,7 +225,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: (open) ? 500 : 0,
                             child: EasyWebView(
                                 src: src3,
-                                onLoaded: () {
+                                onLoaded: (controller) {
+                                  setState(() {
+                                    _controller3 = controller;
+                                  });
                                   print('$key3: Loaded: $src3');
                                 },
                                 isHtml: _isHtml,
@@ -224,6 +251,14 @@ class _HomeScreenState extends State<HomeScreen> {
 <html>
 <head>
 <title>Page Title</title>
+<script>
+window.addEventListener("message", (message) => {
+  console.log(message);
+  if (message.data === "print") {
+    window.print()
+  }
+})
+</script>
 </head>
 <body>
 <h1>This is a Heading</h1>
@@ -233,6 +268,14 @@ class _HomeScreenState extends State<HomeScreen> {
 """;
 
   String get markdownContent => """
+<script>
+window.addEventListener("message", (message) => {
+  console.log(message);
+  if (message.data === "print") {
+    window.print()
+  }
+})
+</script>
 # This is a heading
 ## Here's a smaller heading
 This is a paragraph
