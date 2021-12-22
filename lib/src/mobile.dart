@@ -181,17 +181,15 @@ class _EasyWebViewState extends State<EasyWebView> {
                 ? NavigationDecision.prevent
                 : NavigationDecision.navigate;
           },
-          javascriptChannels: widget.crossWindowEvents.isNotEmpty
-              ? widget.crossWindowEvents
-                  .map(
-                    (crossWindowEvent) => JavascriptChannel(
-                      name: crossWindowEvent.name,
-                      onMessageReceived: (javascriptMessage) => crossWindowEvent
-                          .eventAction(javascriptMessage.message),
-                    ),
-                  )
-                  .toSet()
-              : <JavascriptChannel>{},
+          javascriptChannels: widget.crossWindowEvents
+              .map(
+                (crossWindowEvent) => JavascriptChannel(
+                  name: crossWindowEvent.name,
+                  onMessageReceived: (javascriptMessage) =>
+                      crossWindowEvent.eventAction(javascriptMessage.message),
+                ),
+              )
+              .toSet(),
         );
       },
     );

@@ -188,12 +188,15 @@ class _EasyWebViewState extends State<EasyWebView> {
       log('View Created: viewId: $viewId');
 
       element
-        ..id = 'iframe-$viewId'
-        ..style.border = '0'
-        ..allowFullscreen = widget.webAllowFullScreen
-        ..allow = widget.allow
-        ..height = height.toInt().toString()
-        ..width = width.toInt().toString();
+            ..id = 'iframe-$viewId'
+            ..style.border = '0'
+            ..allowFullscreen = widget.webAllowFullScreen
+            ..allow = widget.allow
+            ..style.width = '100%'
+            ..style.height = '100%'
+          // ..height = height.toInt().toString()
+          // ..width = width.toInt().toString()
+          ;
 
       html.window.addEventListener('onbeforeunload', (event) async {
         final beforeUnloadEvent = (event as html.BeforeUnloadEvent);

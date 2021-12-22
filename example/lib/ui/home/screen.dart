@@ -1,4 +1,5 @@
 import 'package:easy_web_view/easy_web_view.dart';
+import 'package:example/ui/html_to_pdf/html_to_pdf.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -56,19 +57,25 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }),
             if ((_isHtml || _isMarkdown) && _controller != null)
-              Builder(builder: (context) {
-                return IconButton(
-                  icon: Icon(Icons.print),
-                  onPressed: () async {
-                    final _c = _controller!;
-                    if (kIsWeb) {
-                      _c.postMessageWeb('print', '*');
-                    } else {
-                      // await _c.evaluateJSMobile(js);
-                    }
-                  },
-                );
-              }),
+              IconButton(
+                icon: Icon(Icons.print),
+                onPressed: () async {
+                  final _c = _controller!;
+                  if (kIsWeb) {
+                    _c.postMessageWeb('print', '*');
+                  } else {
+                    // await _c.evaluateJSMobile(js);
+                  }
+                },
+              ),
+            IconButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => HtmlToPdfTest(),
+                ),
+              ),
+              icon: Icon(Icons.picture_as_pdf),
+            ),
           ],
         ),
         body: _editing
@@ -181,10 +188,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 : WebNavigationDecision.navigate,
                             crossWindowEvents: [
                               CrossWindowEvent(
-                                  name: 'Test',
-                                  eventAction: (eventMessage) {
-                                    print('Event message: $eventMessage');
-                                  }),
+                                name: 'Test',
+                                eventAction: (eventMessage) {
+                                  // print('Event message: $eventMessage');
+                                },
+                              ),
                             ],
                             // width: 100,
                             // height: 100,
