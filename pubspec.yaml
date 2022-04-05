@@ -11,12 +11,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_markdown: ^0.6.6
+  flutter_widget_from_html: ^0.8.5
   html2md: ^1.2.5
   http: ^0.13.3
   markdown: ^4.0.0
   permission_handler: ^8.1.6
   url_launcher: ^6.0.12
   webview_flutter: ^2.1.0
+  webview_windows: ^0.1.6
 
 dev_dependencies:
   flutter_test:
