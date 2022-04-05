@@ -1,9 +1,8 @@
 import 'dart:io';
 
+import 'package:easy_web_view/src/platforms/native.dart';
 import 'package:flutter/material.dart';
 
-import 'platforms/android.dart';
-import 'platforms/ios.dart';
 import 'platforms/markdown.dart';
 import 'platforms/widgets.dart';
 import 'platforms/windows.dart';
@@ -18,6 +17,7 @@ class EasyWebView extends StatelessWidget {
     this.isMarkdown = false,
     this.convertToMarkdown = false,
     this.convertToWidgets = false,
+    this.fallbackBuilder,
   }) : super(key: key);
 
   final String src;
@@ -26,6 +26,7 @@ class EasyWebView extends StatelessWidget {
   final bool isMarkdown;
   final bool convertToMarkdown;
   final bool convertToWidgets;
+  final WidgetBuilder? fallbackBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +46,13 @@ class EasyWebView extends StatelessWidget {
         onLoaded: onLoaded,
       );
     }
-    if (Platform.isIOS) {
-      return IosWebView(
+    if (Platform.isIOS || Platform.isAndroid) {
+      return NativeWebView(
         src: src,
         width: width,
         height: height,
         onLoaded: onLoaded,
-      );
-    }
-    if (Platform.isAndroid) {
-      return AndroidWebView(
-        src: src,
-        width: width,
-        height: height,
-        onLoaded: onLoaded,
+        options: const NativeWebViewOptions(),
       );
     }
     if (Platform.isWindows) {
@@ -69,6 +63,10 @@ class EasyWebView extends StatelessWidget {
         onLoaded: onLoaded,
       );
     }
-    return Placeholder();
+    if (fallbackBuilder != null) {
+      return fallbackBuilder!(context);
+    } else {
+      return Placeholder();
+    }
   }
 }
