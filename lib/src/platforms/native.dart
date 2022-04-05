@@ -37,21 +37,26 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
 
     // Enable hybrid composition.
     if (Platform.isAndroid) wv.WebView.platform = wv.SurfaceAndroidWebView();
+
+    reload();
   }
 
   @override
   void didUpdateWidget(covariant NativeWebView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.src != widget.src) {
-      controller.loadUrl(widget.src);
+      reload();
     }
+  }
+
+  reload() {
+    controller.loadUrl(widget.src.isValidUrl ? widget.src : widget.src.dataUrl);
   }
 
   @override
   Widget builder(BuildContext context, Size size, String contents) {
     return wv.WebView(
       key: widget.key,
-      initialUrl: contents.dataUrl,
       javascriptMode: wv.JavascriptMode.unrestricted,
       onWebViewCreated: (webViewController) {
         controller = webViewController;

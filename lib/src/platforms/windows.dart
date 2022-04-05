@@ -57,6 +57,11 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
     initPlatformState();
   }
 
+  Future<void> reload() async {
+    await controller
+        .loadUrl(widget.src.isValidUrl ? widget.src : widget.src.dataUrl);
+  }
+
   Future<void> initPlatformState() async {
     try {
       await wv.WebviewController.initializeEnvironment(
@@ -74,13 +79,21 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
 
       await controller.setBackgroundColor(widget.options.backgroundColor);
       await controller.setPopupWindowPolicy(widget.options.popupWindowPolicy);
-      await controller.loadUrl(widget.src.dataUrl);
+      await reload();
 
       if (mounted) setState(() {});
     } on PlatformException catch (e) {
       if (widget.options.onError != null) {
         widget.options.onError!(e);
       }
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant WindowsWebView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.src != widget.src) {
+      reload();
     }
   }
 
@@ -106,17 +119,19 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
     final decision = await showDialog<wv.WebviewPermissionDecision>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('WebView permission requested'),
-        content: Text('WebView has requested permission \'$kind\''),
+        title: const Text('Permission requested'),
+        content: Text('Permission needed: \'$kind\''),
         actions: <Widget>[
           TextButton(
-            onPressed: () =>
-                Navigator.pop(context, wv.WebviewPermissionDecision.deny),
+            onPressed: () {
+              Navigator.pop(context, wv.WebviewPermissionDecision.deny);
+            },
             child: const Text('Deny'),
           ),
           TextButton(
-            onPressed: () =>
-                Navigator.pop(context, wv.WebviewPermissionDecision.allow),
+            onPressed: () {
+              Navigator.pop(context, wv.WebviewPermissionDecision.allow);
+            },
             child: const Text('Allow'),
           ),
         ],
