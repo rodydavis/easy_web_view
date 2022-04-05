@@ -1,7 +1,6 @@
 import 'dart:io';
-import 'dart:ui';
 
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart' as wv;
 
 import '../extensions.dart';
@@ -9,12 +8,14 @@ import 'base.dart';
 
 class NativeWebView extends WebView {
   const NativeWebView({
+    required Key? key,
     required String src,
     required double? width,
     required double? height,
     required void Function()? onLoaded,
     required this.options,
   }) : super(
+          key: key,
           src: src,
           width: width,
           height: height,
@@ -36,8 +37,6 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
 
     // Enable hybrid composition.
     if (Platform.isAndroid) wv.WebView.platform = wv.SurfaceAndroidWebView();
-
-    reload();
   }
 
   @override
@@ -48,17 +47,22 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
     }
   }
 
+  String get url {
+    return widget.src.isValidUrl ? widget.src : widget.src.dataUrl;
+  }
+
   reload() {
-    controller.loadUrl(widget.src.isValidUrl ? widget.src : widget.src.dataUrl);
+    controller.loadUrl(url);
   }
 
   @override
   Widget builder(BuildContext context, Size size, String contents) {
     return wv.WebView(
       key: widget.key,
+      initialUrl: url,
       javascriptMode: wv.JavascriptMode.unrestricted,
-      onWebViewCreated: (webViewController) {
-        controller = webViewController;
+      onWebViewCreated: (value) {
+        controller = value;
         if (widget.onLoaded != null) {
           widget.onLoaded!();
         }
@@ -75,13 +79,12 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
       },
       javascriptChannels: widget.options.crossWindowEvents.isNotEmpty
           ? widget.options.crossWindowEvents
-              .map(
-                (crossWindowEvent) => wv.JavascriptChannel(
-                  name: crossWindowEvent.name,
-                  onMessageReceived: (javascriptMessage) =>
-                      crossWindowEvent.eventAction(javascriptMessage.message),
-                ),
-              )
+              .map((event) => wv.JavascriptChannel(
+                    name: event.name,
+                    onMessageReceived: (javascriptMessage) {
+                      event.eventAction(javascriptMessage.message);
+                    },
+                  ))
               .toSet()
           : Set<wv.JavascriptChannel>(),
     );

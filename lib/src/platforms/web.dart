@@ -1,4 +1,5 @@
 // ignore: avoid_web_libraries_in_flutter
+import 'dart:async';
 import 'dart:html' as html;
 import 'dart:ui' as ui;
 
@@ -9,12 +10,14 @@ import 'base.dart';
 
 class BrowserWebView extends WebView {
   const BrowserWebView({
+    required Key? key,
     required String src,
     required double? width,
     required double? height,
     required void Function()? onLoaded,
     required this.options,
   }) : super(
+          key: key,
           src: src,
           width: width,
           height: height,
@@ -29,10 +32,12 @@ class BrowserWebView extends WebView {
 
 class BrowserWebViewState extends WebViewState<BrowserWebView> {
   static final _iframeElementMap = Map<Key, html.IFrameElement>();
+  bool _loaded = false;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    // ignore: invalid_null_aware_operator
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       final _iframe = _iframeElementMap[widget.key];
       _iframe?.onLoad.listen((event) {
         widget.onLoaded?.call();
@@ -43,8 +48,10 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
 
   void setup(String? src, double width, double height) {
     final key = widget.key ?? ValueKey('');
+    final dataUrl = widget.src.isValidUrl ? widget.src : widget.src.dataUrl;
     // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory('iframe-$src', (int viewId) {
+    ui.platformViewRegistry.registerViewFactory('iframe-$dataUrl',
+        (int viewId) {
       if (_iframeElementMap[key] == null) {
         _iframeElementMap[key] = html.IFrameElement();
       }
@@ -86,10 +93,18 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
       element..src = widget.src.isValidUrl ? widget.src : widget.src.dataUrl;
       return element;
     });
+    scheduleMicrotask(() {
+      setState(() {
+        _loaded = true;
+      });
+    });
   }
 
   @override
   Widget builder(BuildContext context, ui.Size size, String contents) {
+    if (!_loaded) {
+      setup(widget.src, size.width, size.height);
+    }
     final dataUrl = widget.src.isValidUrl ? widget.src : widget.src.dataUrl;
     return AbsorbPointer(
       child: RepaintBoundary(

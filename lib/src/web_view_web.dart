@@ -17,6 +17,7 @@ class EasyWebView extends EasyWebViewBase {
     WidgetBuilder? fallbackBuilder,
     WebViewOptions options = const WebViewOptions(),
   }) : super(
+          key: key,
           src: src,
           height: height,
           width: width,
@@ -32,6 +33,7 @@ class EasyWebView extends EasyWebViewBase {
   Widget build(BuildContext context) {
     if (!canBuild()) {
       return BrowserWebView(
+        key: key,
         src: src,
         width: width,
         height: height,

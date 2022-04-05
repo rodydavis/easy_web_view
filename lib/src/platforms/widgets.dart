@@ -7,12 +7,14 @@ import 'base.dart';
 
 class WidgetsWebView extends WebView {
   WidgetsWebView({
+    required Key? key,
     required String src,
     required double? width,
     required double? height,
     required void Function()? onLoaded,
     this.options = const WidgetsWebViewOptions(),
   }) : super(
+          key: key,
           src: src,
           width: width,
           height: height,

@@ -20,6 +20,7 @@ class EasyWebView extends EasyWebViewBase {
     WidgetBuilder? fallbackBuilder,
     WebViewOptions options = const WebViewOptions(),
   }) : super(
+          key: key,
           src: src,
           height: height,
           width: width,
@@ -36,6 +37,7 @@ class EasyWebView extends EasyWebViewBase {
     if (!canBuild()) {
       if (Platform.isIOS || Platform.isAndroid) {
         return NativeWebView(
+          key: key,
           src: src,
           width: width,
           height: height,
@@ -46,6 +48,7 @@ class EasyWebView extends EasyWebViewBase {
 
       if (Platform.isWindows) {
         return WindowsWebView(
+          key: key,
           src: src,
           width: width,
           height: height,

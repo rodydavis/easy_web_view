@@ -6,6 +6,7 @@ import 'platforms/widgets.dart';
 
 abstract class EasyWebViewBase extends StatelessWidget {
   const EasyWebViewBase({
+    Key? key,
     required this.src,
     required this.width,
     required this.height,
@@ -15,7 +16,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
     required this.convertToWidgets,
     required this.fallbackBuilder,
     required this.options,
-  });
+  }) : super(key: key);
 
   final String src;
   final double? width, height;
@@ -37,6 +38,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
     if (canBuild()) {
       if (convertToWidgets) {
         return WidgetsWebView(
+          key: key,
           src: src,
           width: width,
           height: height,
@@ -46,6 +48,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
 
       if (isMarkdown || convertToMarkdown) {
         return MarkdownWebView(
+          key: key,
           src: src,
           height: height,
           width: width,

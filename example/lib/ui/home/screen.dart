@@ -150,23 +150,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             onLoaded: () {
                               print('$key: Loaded: $src');
                             },
-                            isHtml: _isHtml,
+
                             isMarkdown: _isMarkdown,
                             convertToWidgets: _useWidgets,
                             key: key,
-                            widgetsTextSelectable: _isSelectable,
-                            webNavigationDelegate: (_) => _blockNavigation
-                                ? WebNavigationDecision.prevent
-                                : WebNavigationDecision.navigate,
-                            crossWindowEvents: [
-                              CrossWindowEvent(
-                                  name: 'Test',
-                                  eventAction: (eventMessage) {
-                                    print('Event message: $eventMessage');
-                                  }),
-                            ],
-                            // width: 100,
-                            // height: 100,
+                            // isHtml: _isHtml,
+                            // widgetsTextSelectable: _isSelectable,
+                            // webNavigationDelegate: (_) => _blockNavigation
+                            //     ? WebNavigationDecision.prevent
+                            //     : WebNavigationDecision.navigate,
+                            // crossWindowEvents: [
+                            //   CrossWindowEvent(
+                            //       name: 'Test',
+                            //       eventAction: (eventMessage) {
+                            //         print('Event message: $eventMessage');
+                            //       }),
+                            // ],
                           )),
                       Expanded(
                         flex: 1,
@@ -175,16 +174,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             print('$key2: Loaded: $src2');
                           },
                           src: src2,
-                          isHtml: _isHtml,
+                          key: key2,
                           isMarkdown: _isMarkdown,
                           convertToWidgets: _useWidgets,
-                          widgetsTextSelectable: _isSelectable,
-                          key: key2,
-                          webNavigationDelegate: (_) => _blockNavigation
-                              ? WebNavigationDecision.prevent
-                              : WebNavigationDecision.navigate,
-                          // width: 100,
-                          // height: 100,
+                          // isHtml: _isHtml,
+                          // widgetsTextSelectable: _isSelectable,
+                          // webNavigationDelegate: (_) => _blockNavigation
+                          //     ? WebNavigationDecision.prevent
+                          //     : WebNavigationDecision.navigate,
                         ),
                       ),
                     ],
@@ -204,13 +201,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onLoaded: () {
                                   print('$key3: Loaded: $src3');
                                 },
-                                isHtml: _isHtml,
                                 isMarkdown: _isMarkdown,
                                 convertToWidgets: _useWidgets,
-                                widgetsTextSelectable: _isSelectable,
                                 key: key3
-                                // width: 100,
-                                // height: 100,
+                                // isHtml: _isHtml,
+                                // widgetsTextSelectable: _isSelectable,
                                 ),
                           )),
                     ],

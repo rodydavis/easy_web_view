@@ -6,7 +6,7 @@ import 'package:webview_windows/webview_windows.dart'
 
 import 'package:flutter/material.dart';
 
-import '../impl.dart';
+import '../widgets/optionally_sized_child.dart';
 
 abstract class WebView extends StatefulWidget {
   const WebView({

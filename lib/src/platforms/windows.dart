@@ -9,12 +9,14 @@ import 'base.dart';
 
 class WindowsWebView extends WebView {
   WindowsWebView({
+    required Key? key,
     required String src,
     required double? width,
     required double? height,
     required void Function()? onLoaded,
     required this.options,
   }) : super(
+          key: key,
           src: src,
           width: width,
           height: height,
