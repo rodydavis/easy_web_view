@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'platforms/base.dart';
 import 'platforms/native.dart';
 import 'platforms/windows.dart';
 import 'web_view_base.dart';
@@ -9,14 +10,15 @@ import 'web_view_base.dart';
 class EasyWebView extends EasyWebViewBase {
   const EasyWebView({
     Key? key,
-    required this.src,
-    this.height,
-    this.width,
-    this.onLoaded,
-    this.isMarkdown = false,
-    this.convertToMarkdown = false,
-    this.convertToWidgets = false,
-    this.fallbackBuilder,
+    required String src,
+    double? height,
+    double? width,
+    void Function()? onLoaded,
+    bool isMarkdown = false,
+    bool convertToMarkdown = false,
+    bool convertToWidgets = false,
+    WidgetBuilder? fallbackBuilder,
+    WebViewOptions options = const WebViewOptions(),
   }) : super(
           src: src,
           height: height,
@@ -26,15 +28,8 @@ class EasyWebView extends EasyWebViewBase {
           convertToMarkdown: convertToMarkdown,
           convertToWidgets: convertToWidgets,
           fallbackBuilder: fallbackBuilder,
+          options: options,
         );
-
-  final String src;
-  final double? width, height;
-  final void Function()? onLoaded;
-  final bool isMarkdown;
-  final bool convertToMarkdown;
-  final bool convertToWidgets;
-  final WidgetBuilder? fallbackBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +40,7 @@ class EasyWebView extends EasyWebViewBase {
           width: width,
           height: height,
           onLoaded: onLoaded,
-          options: const NativeWebViewOptions(),
+          options: options,
         );
       }
 
@@ -55,6 +50,7 @@ class EasyWebView extends EasyWebViewBase {
           width: width,
           height: height,
           onLoaded: onLoaded,
+          options: options,
         );
       }
     }

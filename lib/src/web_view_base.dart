@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'platforms/base.dart';
 import 'platforms/markdown.dart';
 import 'platforms/widgets.dart';
 
@@ -13,6 +14,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
     required this.convertToMarkdown,
     required this.convertToWidgets,
     required this.fallbackBuilder,
+    required this.options,
   });
 
   final String src;
@@ -22,6 +24,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
   final bool convertToMarkdown;
   final bool convertToWidgets;
   final WidgetBuilder? fallbackBuilder;
+  final WebViewOptions options;
 
   bool canBuild() {
     if (convertToWidgets) return true;

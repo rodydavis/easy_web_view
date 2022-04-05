@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -22,7 +21,7 @@ class NativeWebView extends WebView {
           onLoaded: onLoaded,
         );
 
-  final NativeWebViewOptions options;
+  final WebViewOptions options;
 
   @override
   State<WebView> createState() => NativeWebViewState();
@@ -65,11 +64,11 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
         }
       },
       navigationDelegate: (navigationRequest) async {
-        if (widget.options.webNavigationDelegate == null) {
+        if (widget.options.navigationDelegate == null) {
           return wv.NavigationDecision.navigate;
         }
-        final _navDecision = await widget.options.webNavigationDelegate!(
-            WebNavigationRequest(navigationRequest.url));
+        final _navDecision = await widget.options
+            .navigationDelegate!(WebNavigationRequest(navigationRequest.url));
         return _navDecision == WebNavigationDecision.prevent
             ? wv.NavigationDecision.prevent
             : wv.NavigationDecision.navigate;
@@ -87,45 +86,4 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
           : Set<wv.JavascriptChannel>(),
     );
   }
-}
-
-class NativeWebViewOptions {
-  const NativeWebViewOptions({
-    this.convertToWidgets = false,
-    this.isMarkdown = false,
-    this.isHtml = false,
-    this.headers,
-    this.widgetsTextSelectable = false,
-    this.webNavigationDelegate,
-    this.crossWindowEvents = const [],
-  });
-
-  final bool convertToWidgets;
-  final bool isMarkdown;
-  final bool isHtml;
-  final Map<String, String>? headers;
-  final bool widgetsTextSelectable;
-  final WebNavigationDelegate? webNavigationDelegate;
-  final List<CrossWindowEvent> crossWindowEvents;
-}
-
-enum WebNavigationDecision { navigate, prevent }
-
-class WebNavigationRequest {
-  WebNavigationRequest(this.url);
-
-  final String url;
-}
-
-typedef FutureOr<WebNavigationDecision> WebNavigationDelegate(
-    WebNavigationRequest webNavigationRequest);
-
-class CrossWindowEvent {
-  final String name;
-  final Function(dynamic) eventAction;
-
-  CrossWindowEvent({
-    required this.name,
-    required this.eventAction,
-  });
 }

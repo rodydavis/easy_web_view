@@ -13,7 +13,7 @@ class WindowsWebView extends WebView {
     required double? width,
     required double? height,
     required void Function()? onLoaded,
-    this.options = const WindowsWebViewOptions(),
+    required this.options,
   }) : super(
           src: src,
           width: width,
@@ -21,30 +21,10 @@ class WindowsWebView extends WebView {
           onLoaded: onLoaded,
         );
 
-  final WindowsWebViewOptions options;
+  final WebViewOptions options;
 
   @override
   State<WebView> createState() => WindowsWebViewState();
-}
-
-class WindowsWebViewOptions {
-  const WindowsWebViewOptions({
-    this.popupWindowPolicy = wv.WebviewPopupWindowPolicy.deny,
-    this.backgroundColor = Colors.transparent,
-    this.onUrlChanged,
-    this.onError,
-    this.userDataPath,
-    this.browserExePath,
-    this.additionalArguments,
-  });
-
-  final wv.WebviewPopupWindowPolicy popupWindowPolicy;
-  final Color backgroundColor;
-  final void Function(String)? onUrlChanged;
-  final void Function(PlatformException)? onError;
-  final String? userDataPath;
-  final String? browserExePath;
-  final String? additionalArguments;
 }
 
 class WindowsWebViewState extends WebViewState<WindowsWebView> {
@@ -63,28 +43,29 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
   }
 
   Future<void> initPlatformState() async {
+    final options = widget.options.windows;
     try {
       await wv.WebviewController.initializeEnvironment(
-        userDataPath: widget.options.userDataPath,
-        browserExePath: widget.options.browserExePath,
-        additionalArguments: widget.options.additionalArguments,
+        userDataPath: options.userDataPath,
+        browserExePath: options.browserExePath,
+        additionalArguments: options.additionalArguments,
       );
 
       await controller.initialize();
       controller.url.listen((url) {
-        if (widget.options.onUrlChanged != null) {
-          widget.options.onUrlChanged!(url);
+        if (options.onUrlChanged != null) {
+          options.onUrlChanged!(url);
         }
       });
 
-      await controller.setBackgroundColor(widget.options.backgroundColor);
-      await controller.setPopupWindowPolicy(widget.options.popupWindowPolicy);
+      await controller.setBackgroundColor(options.backgroundColor);
+      await controller.setPopupWindowPolicy(options.popupWindowPolicy);
       await reload();
 
       if (mounted) setState(() {});
     } on PlatformException catch (e) {
-      if (widget.options.onError != null) {
-        widget.options.onError!(e);
+      if (options.onError != null) {
+        options.onError!(e);
       }
     }
   }
