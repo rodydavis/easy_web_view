@@ -43,6 +43,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
           width: width,
           height: height,
           onLoaded: onLoaded,
+          options: options,
         );
       }
 
@@ -53,6 +54,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
           height: height,
           width: width,
           onLoaded: onLoaded,
+          options: options,
         );
       }
     }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../extensions.dart';
-import '../widgets/local_markdown.dart';
-import '../widgets/remote_markdown.dart';
+import '../widgets/remote_content.dart';
 import 'base.dart';
 
 class MarkdownWebView extends WebView {
@@ -12,7 +12,7 @@ class MarkdownWebView extends WebView {
     required double? width,
     required double? height,
     required void Function()? onLoaded,
-    this.options = const MarkdownOptions(),
+    required this.options,
   }) : super(
           key: key,
           src: src,
@@ -21,7 +21,7 @@ class MarkdownWebView extends WebView {
           onLoaded: onLoaded,
         );
 
-  final MarkdownOptions options;
+  final WebViewOptions options;
 
   @override
   State<WebView> createState() => MarkdownState();
@@ -30,16 +30,35 @@ class MarkdownWebView extends WebView {
 class MarkdownState extends WebViewState<MarkdownWebView> {
   @override
   Widget builder(BuildContext context, Size size, String contents) {
-    if (contents.isValidUrl) {
-      return RemoteMarkdown(
-        src: contents,
-        options: widget.options,
-      );
-    } else {
-      return LocalMarkdown(
-        data: contents,
-        options: widget.options,
+    final options = widget.options;
+    if (widget.src.isValidUrl) {
+      // TODO: Check for markdown files from assets
+      // TODO: Check for markdown files form file system
+      return RemoteContent(
+        src: widget.src,
+        headers: options.markdown.headers,
+        builder: (context, contents) {
+          String content = contents;
+          if (widget.src.isValidHtml) {
+            if (options.markdown.convertToMarkdown != null) {
+              content = options.markdown.convertToMarkdown!(content);
+            } else {
+              content = content.toMarkdown();
+            }
+          }
+          return renderMarkdown(context, content);
+        },
       );
     }
+    return renderMarkdown(context, widget.src);
+  }
+
+  Widget renderMarkdown(BuildContext context, String data) {
+    final options = widget.options.markdown;
+    return Markdown(
+      data: data,
+      onTapLink: (_, url, __) => options.onTapLink?.call(url),
+      selectable: options.selectable,
+    );
   }
 }

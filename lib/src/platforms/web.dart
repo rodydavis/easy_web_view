@@ -48,10 +48,8 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
 
   void setup(String? src, double width, double height) {
     final key = widget.key ?? ValueKey('');
-    final dataUrl = widget.src.isValidUrl ? widget.src : widget.src.dataUrl;
     // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory('iframe-$dataUrl',
-        (int viewId) {
+    ui.platformViewRegistry.registerViewFactory('iframe-$url', (int viewId) {
       if (_iframeElementMap[key] == null) {
         _iframeElementMap[key] = html.IFrameElement();
       }
@@ -90,7 +88,7 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
           });
         });
       }
-      element..src = widget.src.isValidUrl ? widget.src : widget.src.dataUrl;
+      element..src = url;
       return element;
     });
     scheduleMicrotask(() {
@@ -105,12 +103,11 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
     if (!_loaded) {
       setup(widget.src, size.width, size.height);
     }
-    final dataUrl = widget.src.isValidUrl ? widget.src : widget.src.dataUrl;
     return AbsorbPointer(
       child: RepaintBoundary(
         child: HtmlElementView(
           key: widget.key,
-          viewType: 'iframe-$dataUrl',
+          viewType: 'iframe-$url',
         ),
       ),
     );

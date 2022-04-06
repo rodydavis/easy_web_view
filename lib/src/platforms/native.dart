@@ -47,10 +47,6 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
     }
   }
 
-  String get url {
-    return widget.src.isValidUrl ? widget.src : widget.src.dataUrl;
-  }
-
   reload() {
     controller.loadUrl(url);
   }

@@ -40,8 +40,7 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
   }
 
   Future<void> reload() async {
-    await controller
-        .loadUrl(widget.src.isValidUrl ? widget.src : widget.src.dataUrl);
+    await controller.loadUrl(url);
   }
 
   Future<void> initPlatformState() async {

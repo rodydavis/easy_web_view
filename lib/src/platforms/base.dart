@@ -3,9 +3,20 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:webview_windows/webview_windows.dart'
     show WebviewPopupWindowPolicy;
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart'
+    show
+        WidgetFactory,
+        CustomStylesBuilder,
+        CustomWidgetBuilder,
+        OnErrorBuilder,
+        OnLoadingBuilder,
+        ImageMetadata,
+        RebuildTriggers,
+        RenderMode;
 
 import 'package:flutter/material.dart';
 
+import '../extensions.dart';
 import '../widgets/optionally_sized_child.dart';
 
 abstract class WebView extends StatefulWidget {
@@ -45,6 +56,10 @@ class WebViewState<T extends WebView> extends State<T> {
   Widget builder(BuildContext context, Size size, String contents) {
     return Placeholder();
   }
+
+  String get url {
+    return widget.src.toDataUrl();
+  }
 }
 
 enum WebNavigationDecision { navigate, prevent }
@@ -74,6 +89,8 @@ class WebViewOptions {
   final BrowserWebViewOptions browser;
   final NativeWebViewOptions native;
   final WindowsWebViewOptions windows;
+  final MarkdownOptions markdown;
+  final WidgetsWebViewOptions widgets;
 
   const WebViewOptions({
     this.navigationDelegate,
@@ -81,7 +98,61 @@ class WebViewOptions {
     this.browser = const BrowserWebViewOptions(),
     this.native = const NativeWebViewOptions(),
     this.windows = const WindowsWebViewOptions(),
+    this.markdown = const MarkdownOptions(),
+    this.widgets = const WidgetsWebViewOptions(),
   });
+}
+
+class MarkdownOptions {
+  const MarkdownOptions({
+    this.selectable = false,
+    this.headers = const {},
+    this.convertToMarkdown,
+    this.convertToHtml,
+    this.onTapLink,
+  });
+
+  final bool selectable;
+  final String Function(String)? convertToMarkdown;
+  final String Function(String)? convertToHtml;
+  final void Function(String?)? onTapLink;
+  final Map<String, String> headers;
+}
+
+class WidgetsWebViewOptions {
+  const WidgetsWebViewOptions({
+    this.buildAsync,
+    this.factoryBuilder,
+    this.baseUrl,
+    this.customStylesBuilder,
+    this.customWidgetBuilder,
+    this.onErrorBuilder,
+    this.onLoadingBuilder,
+    this.onTapImage,
+    this.onTapUrl,
+    this.rebuildTriggers,
+    this.textStyle,
+    this.isSelectable = false,
+    this.enableCaching = true,
+    this.onSelectionChanged,
+    this.renderMode = RenderMode.column,
+  });
+
+  final bool? buildAsync;
+  final bool enableCaching;
+  final WidgetFactory Function()? factoryBuilder;
+  final bool isSelectable;
+  final Uri? baseUrl;
+  final CustomStylesBuilder? customStylesBuilder;
+  final CustomWidgetBuilder? customWidgetBuilder;
+  final OnErrorBuilder? onErrorBuilder;
+  final OnLoadingBuilder? onLoadingBuilder;
+  final SelectionChangedCallback? onSelectionChanged;
+  final void Function(ImageMetadata)? onTapImage;
+  final FutureOr<bool> Function(String)? onTapUrl;
+  final RebuildTriggers? rebuildTriggers;
+  final RenderMode renderMode;
+  final TextStyle? textStyle;
 }
 
 class NativeWebViewOptions {

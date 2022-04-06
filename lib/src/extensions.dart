@@ -3,27 +3,31 @@ import 'package:markdown/markdown.dart' as md;
 
 extension StringUtils on String {
   bool get isValidHtml => this.contains('<html>') && this.contains('</html>');
-  
+
   bool get isValidUrl =>
       this.startsWith('https://') || this.startsWith('http://');
 
   bool get isValidMarkdown => !isValidUrl && !isValidHtml;
 
-  String get dataUrl {
-    String _src = this;
-    if (isValidMarkdown) {
-      _src = "data:text/html;charset=utf-8,${Uri.encodeComponent(this.html)}";
-    }
-    if (isValidHtml) {
-      _src =
-          "data:text/html;charset=utf-8,${Uri.encodeComponent(this.wrapHtml())}";
-    }
-    return _src;
+  String toMarkdown() {
+    if (isValidHtml) return html2md.convert(this);
+    return this;
   }
 
-  String get markdown => html2md.convert(this);
+  String toHtml() {
+    if (isValidMarkdown) return md.markdownToHtml(this);
+    return this;
+  }
 
-  String get html => md.markdownToHtml(this);
+  String toDataUrl() {
+    if (!isValidUrl) {
+      String _content = this;
+      if (isValidMarkdown) _content = toHtml();
+      if (isValidHtml) _content = toHtml().wrapHtml();
+      return "data:text/html;charset=utf-8,${Uri.encodeComponent(_content)}";
+    }
+    return this;
+  }
 
   String wrapHtml({
     String title = 'Document',
