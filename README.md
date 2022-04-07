@@ -6,7 +6,7 @@
 
 # easy_web_view
 
-Easy Web Views in Flutter on Web and Mobile!
+Easy Web Views in Flutter on Web, Mobile and Desktop\*!
 
 - Supports HTML Content or a Single Element
 - Supports Markdown Source
@@ -20,14 +20,14 @@ Easy Web Views in Flutter on Web and Mobile!
 
 Online Demo: https://rodydavis.github.io/easy_web_view
 
+## Platforms
+
+- Web
+- Android
+- iOS
+- Windows
+
 ## Getting Started
-
-Setup iOS Info.plist
-
-```
-<key>io.flutter.embedded_views_preview</key>
-<true/>
-```
 
 For Loading a new url or changing width/height just call setState!
 
@@ -42,7 +42,22 @@ For Loading a new url or changing width/height just call setState!
 )
 ```
 
+## iOS/Android
+
+Setup iOS Info.plist:
+
+```xml
+<key>io.flutter.embedded_views_preview</key>
+<true/>
+```
+
+### Windows
+
+Follow setup: https://pub.dev/packages/webview_windows
+
 ## Screenshots
 
 ![](https://github.com/rodydavis/easy_web_view/blob/master/doc/screenshots/mobile.png?raw=true)
 ![](https://github.com/rodydavis/easy_web_view/blob/master/doc/screenshots/web.png?raw=true)
+![](https://github.com/rodydavis/easy_web_view/blob/master/doc/screenshots/windows.png?raw=true)
+
