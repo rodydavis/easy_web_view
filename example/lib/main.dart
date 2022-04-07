@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
         body: Row(
           children: [
             NavigationRail(
+              labelType: NavigationRailLabelType.all,
               selectedIndex: currentIndex,
               onDestinationSelected: (int index) {
                 setState(() {
