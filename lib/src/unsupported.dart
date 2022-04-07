@@ -7,7 +7,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   const EasyWebView({
     Key? key,
     required this.src,
-    required this.onLoaded,
+    this.onLoaded,
     this.height,
     this.width,
     this.webAllowFullScreen = true,
@@ -56,7 +56,7 @@ class EasyWebView extends StatefulWidget implements EasyWebViewImpl {
   final bool widgetsTextSelectable;
 
   @override
-  final void Function() onLoaded;
+  final OnLoaded? onLoaded;
 
   @override
   final List<CrossWindowEvent> crossWindowEvents;

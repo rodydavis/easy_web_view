@@ -10,21 +10,24 @@ class EasyWebViewImpl {
   final String src;
   final num? width, height;
   final bool webAllowFullScreen;
+  final String allow;
   final bool isMarkdown;
   final bool isHtml;
   final bool convertToWidgets;
   final Map<String, String> headers;
   final bool widgetsTextSelectable;
-  final void Function() onLoaded;
+
+  final OnLoaded? onLoaded;
   final List<CrossWindowEvent> crossWindowEvents;
   final WebNavigationDelegate? webNavigationDelegate;
 
   const EasyWebViewImpl({
     Key? key,
     required this.src,
-    required this.onLoaded,
+    this.onLoaded,
     this.width,
     this.height,
+    this.allow = '',
     this.webAllowFullScreen = true,
     this.isHtml = false,
     this.isMarkdown = false,
