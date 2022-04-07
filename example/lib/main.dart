@@ -24,9 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String src = 'https://flutter.dev';
   String src2 = 'https://flutter.dev/community';
   String src3 = 'http://www.youtube.com/embed/IyFZznAk69U';
-  static ValueKey key = ValueKey('key_0');
-  static ValueKey key2 = ValueKey('key_1');
-  static ValueKey key3 = ValueKey('key_2');
+  static ValueKey key = const ValueKey('key_0');
+  static ValueKey key2 = const ValueKey('key_1');
+  static ValueKey key3 = const ValueKey('key_2');
   bool _isHtml = false;
   bool _blockNavigation = false;
   bool _isMarkdown = false;
@@ -41,9 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Easy Web View'),
+          title: const Text('Easy Web View'),
           leading: IconButton(
-            icon: Icon(Icons.access_time),
+            icon: const Icon(Icons.access_time),
             onPressed: () {
               setState(() {
                 print("Click!");
@@ -58,10 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
               return IconButton(
                 icon: Icon(_editing ? Icons.close : Icons.settings),
                 onPressed: () {
-                  if (mounted)
+                  if (mounted) {
                     setState(() {
                       _editing = !_editing;
                     });
+                  }
                 },
               );
             }),
@@ -72,10 +73,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: <Widget>[
                     SwitchListTile(
-                      title: Text('Html Content'),
+                      title: const Text('Html Content'),
                       value: _isHtml,
                       onChanged: (val) {
-                        if (mounted)
+                        if (mounted) {
                           setState(() {
                             _isHtml = val;
                             if (val) {
@@ -85,23 +86,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               src = url;
                             }
                           });
+                        }
                       },
                     ),
                     SwitchListTile(
-                      title: Text('Block Html Navigation'),
+                      title: const Text('Block Html Navigation'),
                       value: _blockNavigation,
                       onChanged: (val) {
-                        if (mounted)
+                        if (mounted) {
                           setState(() {
                             _blockNavigation = val;
                           });
+                        }
                       },
                     ),
                     SwitchListTile(
-                      title: Text('Markdown Content'),
+                      title: const Text('Markdown Content'),
                       value: _isMarkdown,
                       onChanged: (val) {
-                        if (mounted)
+                        if (mounted) {
                           setState(() {
                             _isMarkdown = val;
                             if (val) {
@@ -111,33 +114,36 @@ class _HomeScreenState extends State<HomeScreen> {
                               src = url;
                             }
                           });
+                        }
                       },
                     ),
                     SwitchListTile(
-                      title: Text('Use Widgets'),
+                      title: const Text('Use Widgets'),
                       value: _useWidgets,
                       onChanged: (val) {
-                        if (mounted)
+                        if (mounted) {
                           setState(() {
                             _useWidgets = val;
                           });
+                        }
                       },
                     ),
                     SwitchListTile(
-                      title: Text('Selectable Text'),
+                      title: const Text('Selectable Text'),
                       value: _isSelectable,
                       onChanged: (val) {
-                        if (mounted)
+                        if (mounted) {
                           setState(() {
                             _isSelectable = val;
                           });
+                        }
                       },
                     ),
                     SwitchListTile(
-                      title: Text('Show Summernote'),
+                      title: const Text('Show Summernote'),
                       value: _showSummernote,
                       onChanged: (val) {
-                        if (mounted)
+                        if (mounted) {
                           setState(() {
                             _showSummernote = val;
                             if (val) {
@@ -148,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               src = url;
                             }
                           });
+                        }
                       },
                     ),
                   ],
