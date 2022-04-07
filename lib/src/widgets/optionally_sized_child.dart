@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class OptionalSizedChild extends StatelessWidget {
   final double? width, height;
-  final Widget Function(double, double) builder;
+  final Widget Function(BuildContext, Size) builder;
 
   const OptionalSizedChild({
     required this.width,
@@ -12,13 +12,6 @@ class OptionalSizedChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (width != null && height != null) {
-      return SizedBox(
-        width: width,
-        height: height,
-        child: builder(width!, height!),
-      );
-    }
     return LayoutBuilder(
       builder: (context, dimens) {
         final w = width ?? dimens.maxWidth;
@@ -26,7 +19,7 @@ class OptionalSizedChild extends StatelessWidget {
         return SizedBox(
           width: w,
           height: h,
-          child: builder(w, h),
+          child: builder(context, Size(w, h)),
         );
       },
     );

@@ -49,7 +49,7 @@ class WebViewState<T extends WebView> extends State<T> {
     return OptionalSizedChild(
       width: widget.width,
       height: widget.height,
-      builder: (w, h) => builder(context, Size(w, h), widget.src),
+      builder: (context, size) => builder(context, size, widget.src),
     );
   }
 
