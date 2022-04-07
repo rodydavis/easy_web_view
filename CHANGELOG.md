@@ -1,3 +1,11 @@
+## 1.6.0
+
+* Adding windows platform
+* Moving platform specific settings to options class
+* Updating example
+* Updating README
+* Updating dependencies
+
 ## 1.5.0
 
 * Updated dependencies in pubspec.yaml
