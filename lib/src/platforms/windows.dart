@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_windows/webview_windows.dart' as wv;
 
-import '../extensions.dart';
 import 'base.dart';
 
 class WindowsWebView extends WebView {
@@ -46,11 +45,15 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
   Future<void> initPlatformState() async {
     final options = widget.options.windows;
     try {
-      await wv.WebviewController.initializeEnvironment(
-        userDataPath: options.userDataPath,
-        browserExePath: options.browserExePath,
-        additionalArguments: options.additionalArguments,
-      );
+      if (options.userDataPath != null ||
+          options.browserExePath != null ||
+          options.additionalArguments != null) {
+        await wv.WebviewController.initializeEnvironment(
+          userDataPath: options.userDataPath,
+          browserExePath: options.browserExePath,
+          additionalArguments: options.additionalArguments,
+        );
+      }
 
       await controller.initialize();
       controller.url.listen((url) {

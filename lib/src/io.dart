@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'platforms/base.dart';
 import 'platforms/native.dart';
 import 'platforms/windows.dart';
-import 'web_view_base.dart';
+import 'base.dart';
 
 class EasyWebView extends EasyWebViewBase {
   const EasyWebView({

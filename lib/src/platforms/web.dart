@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:html' as html;
 import 'dart:ui' as ui;
 
-import '../extensions.dart';
 import 'package:flutter/material.dart';
 
 import 'base.dart';
