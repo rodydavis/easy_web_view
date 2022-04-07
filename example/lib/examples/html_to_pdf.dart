@@ -19,12 +19,12 @@ class HtmlToPdfTest extends StatefulWidget {
 class _HtmlToPdfTestState extends State<HtmlToPdfTest> {
   final _templateMemoizer = AsyncMemoizer<String>();
   EasyWebViewControllerWrapperBase? _controller;
-  final _key = ValueKey('test_html_to_pdf');
+  final _key = const ValueKey('test_html_to_pdf');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Test HTML To PDF'),
+        title: const Text('Test HTML To PDF'),
         actions: [
           if (_controller != null)
             IconButton(
@@ -41,7 +41,7 @@ class _HtmlToPdfTestState extends State<HtmlToPdfTest> {
                       .evaluateJSMobile('htmlToPDF(${jsonEncode(msg)})');
                 }
               },
-              icon: Icon(Icons.check_box),
+              icon: const Icon(Icons.check_box),
             ),
         ],
       ),
@@ -50,8 +50,9 @@ class _HtmlToPdfTestState extends State<HtmlToPdfTest> {
             () => rootBundle.loadString('assets/test_html_to_pdf.html')),
         builder: (context, snapshot) {
           final invoiceSrc = snapshot.data;
-          if (invoiceSrc == null)
-            return Center(child: CircularProgressIndicator());
+          if (invoiceSrc == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
           return EasyWebView(
             src: invoiceSrc,
             onLoaded: (controller) {
@@ -59,43 +60,44 @@ class _HtmlToPdfTestState extends State<HtmlToPdfTest> {
                 _controller = controller;
               });
             },
-            isHtml: true,
             key: _key,
-            crossWindowEvents: [
-              CrossWindowEvent(
-                name: 'ParentChannel',
-                eventAction: (eventMessage) async {
-                  if (eventMessage is Map) {
-                    final id = eventMessage['id'];
-                    if (id == 'htmltopdf') {
-                      final res = eventMessage['result'];
-                      log(res.runtimeType.toString());
-                      if (res is Uint8List) {
-                        // final pdfResult = utf8.decode(res);
-                        if (kIsWeb) {
-                          await FileSaver.instance.saveFile(
-                            'easy_web_view_invoice',
-                            res,
-                            'pdf',
-                            mimeType: MimeType.PDF,
-                          );
-                        } else {
-                          await FileSaver.instance.saveAs(
-                            'easy_web_view_invoice',
-                            res,
-                            'pdf',
-                            MimeType.PDF,
-                          );
-                        }
-
+            options: WebViewOptions(
+              crossWindowEvents: [
+                CrossWindowEvent(
+                  name: 'ParentChannel',
+                  eventAction: (eventMessage) async {
+                    if (eventMessage is Map) {
+                      final id = eventMessage['id'];
+                      if (id == 'htmltopdf') {
+                        final res = eventMessage['result'];
                         log(res.runtimeType.toString());
+                        if (res is Uint8List) {
+                          // final pdfResult = utf8.decode(res);
+                          if (kIsWeb) {
+                            await FileSaver.instance.saveFile(
+                              'easy_web_view_invoice',
+                              res,
+                              'pdf',
+                              mimeType: MimeType.PDF,
+                            );
+                          } else {
+                            await FileSaver.instance.saveAs(
+                              'easy_web_view_invoice',
+                              res,
+                              'pdf',
+                              MimeType.PDF,
+                            );
+                          }
+
+                          log(res.runtimeType.toString());
+                        }
                       }
                     }
-                  }
-                  // log('Event message: $eventMessage');
-                },
-              ),
-            ],
+                    // log('Event message: $eventMessage');
+                  },
+                ),
+              ],
+            ),
           );
         },
       ),
