@@ -11,7 +11,7 @@ class MarkdownWebView extends WebView {
     required String src,
     required double? width,
     required double? height,
-    required void Function()? onLoaded,
+    required OnLoaded? onLoaded,
     required this.options,
   }) : super(
           key: key,

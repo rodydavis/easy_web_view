@@ -30,7 +30,7 @@ abstract class WebView extends StatefulWidget {
 
   final String src;
   final double? width, height;
-  final void Function()? onLoaded;
+  final OnLoaded? onLoaded;
 }
 
 class WebViewState<T extends WebView> extends State<T> {
@@ -81,6 +81,19 @@ class CrossWindowEvent {
     required this.name,
     required this.eventAction,
   });
+}
+
+
+typedef OnLoaded = void Function(EasyWebViewControllerWrapperBase controller);
+
+abstract class EasyWebViewControllerWrapperBase {
+  /// WebViewController on mobile, IFrameElement on web
+  Object get nativeWrapper;
+
+  Future<void> evaluateJSMobile(String js);
+  Future<String> evaluateJSWithResMobile(String js);
+
+  void postMessageWeb(dynamic message, String targetOrigin);
 }
 
 class WebViewOptions {

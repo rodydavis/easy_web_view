@@ -20,7 +20,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
 
   final String src;
   final double? width, height;
-  final void Function()? onLoaded;
+  final OnLoaded? onLoaded;
   final bool isMarkdown;
   final bool convertToMarkdown;
   final bool convertToWidgets;

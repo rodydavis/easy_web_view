@@ -10,7 +10,7 @@ class EasyWebView extends EasyWebViewBase {
     required String src,
     double? height,
     double? width,
-    void Function()? onLoaded,
+    OnLoaded? onLoaded,
     bool isMarkdown = false,
     bool convertToMarkdown = false,
     bool convertToWidgets = false,

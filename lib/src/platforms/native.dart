@@ -11,7 +11,7 @@ class NativeWebView extends WebView {
     required String src,
     required double? width,
     required double? height,
-    required void Function()? onLoaded,
+    required OnLoaded? onLoaded,
     required this.options,
   }) : super(
           key: key,
@@ -25,6 +25,29 @@ class NativeWebView extends WebView {
 
   @override
   State<WebView> createState() => NativeWebViewState();
+}
+
+class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
+  final wv.WebViewController _controller;
+
+  EasyWebViewControllerWrapper._(this._controller);
+
+  @override
+  Future<void> evaluateJSMobile(String js) {
+    return _controller.runJavascript(js);
+  }
+
+  @override
+  Future<String> evaluateJSWithResMobile(String js) {
+    return _controller.runJavascriptReturningResult(js);
+  }
+
+  @override
+  Object get nativeWrapper => _controller;
+
+  @override
+  void postMessageWeb(dynamic message, String targetOrigin) =>
+      throw UnsupportedError("the platform doesn't support this operation");
 }
 
 class NativeWebViewState extends WebViewState<NativeWebView> {
@@ -59,7 +82,7 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
       onWebViewCreated: (value) {
         controller = value;
         if (widget.onLoaded != null) {
-          widget.onLoaded!();
+          widget.onLoaded!(EasyWebViewControllerWrapper._(value));
         }
       },
       navigationDelegate: (navigationRequest) async {

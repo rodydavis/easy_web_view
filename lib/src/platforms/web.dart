@@ -13,7 +13,7 @@ class BrowserWebView extends WebView {
     required String src,
     required double? width,
     required double? height,
-    required void Function()? onLoaded,
+    required OnLoaded? onLoaded,
     required this.options,
   }) : super(
           key: key,
@@ -39,7 +39,7 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       final _iframe = _iframeElementMap[widget.key];
       _iframe?.onLoad.listen((event) {
-        widget.onLoaded?.call();
+        widget.onLoaded?.call(EasyWebViewControllerWrapper._(_iframe));
       });
     });
     super.initState();
@@ -111,4 +111,27 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
       ),
     );
   }
+}
+
+class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
+  final html.IFrameElement _iframe;
+
+  EasyWebViewControllerWrapper._(this._iframe);
+
+  @override
+  Future<void> evaluateJSMobile(String js) {
+    throw UnsupportedError("the platform doesn't support this operation");
+  }
+
+  @override
+  Future<String> evaluateJSWithResMobile(String js) {
+    throw UnsupportedError("the platform doesn't support this operation");
+  }
+
+  @override
+  Object get nativeWrapper => _iframe;
+
+  @override
+  void postMessageWeb(dynamic message, String targetOrigin) =>
+      _iframe.contentWindow?.postMessage(message, targetOrigin);
 }
