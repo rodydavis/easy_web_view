@@ -18,7 +18,7 @@ dependencies:
   permission_handler: ^9.2.0
   url_launcher: ^6.0.12
   webview_flutter: ^3.0.2
-  webview_windows: ^0.1.6
+  webview_windows: ">=0.1.6 <0.3.0"
 
 dev_dependencies:
   flutter_test:
