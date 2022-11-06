@@ -29,7 +29,7 @@ class WindowsWebView extends WebView {
 }
 
 class WindowsWebViewState extends WebViewState<WindowsWebView> {
-  final controller = wv.WebviewController();
+  final wv.WebviewController controller = wv.WebviewController();
   bool isSuspended = false;
 
   @override
@@ -39,7 +39,11 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
   }
 
   Future<void> reload() async {
-    await controller.loadUrl(url);
+    await controller.loadUrl(url).then((value) {
+      if(widget.onLoaded != null){
+        widget.onLoaded!(EasyWebViewControllerWrapper._(controller));
+      }
+    });
   }
 
   Future<void> initPlatformState() async {
@@ -61,6 +65,8 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
           options.onUrlChanged!(url);
         }
       });
+
+      controller;
 
       await controller.setBackgroundColor(options.backgroundColor);
       await controller.setPopupWindowPolicy(options.popupWindowPolicy);
@@ -84,6 +90,7 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
 
   @override
   Widget builder(BuildContext context, Size size, String contents) {
+
     return wv.Webview(
       controller,
       permissionRequested: (url, kind, isUserInitiated) => onPermissionRequest(
@@ -137,4 +144,28 @@ class WindowsWebViewState extends WebViewState<WindowsWebView> {
     await controller.resume();
     isSuspended = false;
   }
+}
+
+class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
+
+  final wv.WebviewController _controller;
+
+  EasyWebViewControllerWrapper._(this._controller);
+
+  @override
+  Future<void> evaluateJSMobile(String js) {
+    throw UnsupportedError("the platform doesn't support this operation");
+  }
+
+  @override
+  Future<String> evaluateJSWithResMobile(String js) {
+    throw UnsupportedError("the platform doesn't support this operation");
+  }
+
+  @override
+  Object get nativeWrapper => _controller;
+
+  @override
+  void postMessageWeb(dynamic message, String targetOrigin) =>
+      throw UnsupportedError("the platform doesn't support this operation");
 }
