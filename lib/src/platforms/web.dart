@@ -52,7 +52,7 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
       if (_iframeElementMap[key] == null) {
         _iframeElementMap[key] = html.IFrameElement();
       }
-      final element = _iframeElementMap[widget.key];
+      final element = _iframeElementMap[key];
       final options = widget.options.browser;
 
       element!
