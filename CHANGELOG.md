@@ -1,3 +1,15 @@
+
+# Changelog
+
+## 1.6.1
+
+* Fixed: `onLoaded` not invoked on Windows
+* Updated:
+  * permission_handler from 9.2.0 to 10.2.0 (#94)
+  * markdown from 4.0.1 to 6.0.1 (#89)
+  * webview_windows from 0.1.9 to 0.2.1 (#88)
+  * flutter_lints from 1.0.4 to 2.0.1 (#82)
+
 ## 1.6.0
 
 * Adding windows platform
