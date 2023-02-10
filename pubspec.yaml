@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_markdown: ^0.6.6
-  flutter_widget_from_html: ^0.8.5
+  flutter_widget_from_html: ">=0.8.5 <0.10.0"
   html2md: ^1.2.5
   http: ^0.13.3
   markdown: ^4.0.0
