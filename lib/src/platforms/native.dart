@@ -39,7 +39,7 @@ class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
 
   @override
   Future<String> evaluateJSWithResMobile(String js) async {
-    return (await _controller.runJavaScriptReturningResult(js)) as String;
+    return await _controller.runJavaScriptReturningResult(js).toString();
   }
 
   @override
