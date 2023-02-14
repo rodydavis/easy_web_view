@@ -83,7 +83,6 @@ class CrossWindowEvent {
   });
 }
 
-
 typedef OnLoaded = void Function(EasyWebViewControllerWrapperBase controller);
 
 abstract class EasyWebViewControllerWrapperBase {
@@ -145,22 +144,18 @@ class WidgetsWebViewOptions {
     this.onTapUrl,
     this.rebuildTriggers,
     this.textStyle,
-    this.isSelectable = false,
     this.enableCaching = true,
-    this.onSelectionChanged,
     this.renderMode = RenderMode.column,
   });
 
   final bool? buildAsync;
   final bool enableCaching;
   final WidgetFactory Function()? factoryBuilder;
-  final bool isSelectable;
   final Uri? baseUrl;
   final CustomStylesBuilder? customStylesBuilder;
   final CustomWidgetBuilder? customWidgetBuilder;
   final OnErrorBuilder? onErrorBuilder;
   final OnLoadingBuilder? onLoadingBuilder;
-  final SelectionChangedCallback? onSelectionChanged;
   final void Function(ImageMetadata)? onTapImage;
   final FutureOr<bool> Function(String)? onTapUrl;
   final RebuildTriggers? rebuildTriggers;

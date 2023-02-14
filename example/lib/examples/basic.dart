@@ -20,7 +20,6 @@ class _BasicExampleState extends State<BasicExample> {
   bool _isMarkdown = false;
   bool _useWidgets = false;
   bool _editing = false;
-  bool _isSelectable = false;
   bool _showSummernote = false;
 
   bool open = false;
@@ -112,17 +111,6 @@ class _BasicExampleState extends State<BasicExample> {
                         if (mounted) {
                           setState(() {
                             _useWidgets = val;
-                          });
-                        }
-                      },
-                    ),
-                    SwitchListTile(
-                      title: const Text('Selectable Text'),
-                      value: _isSelectable,
-                      onChanged: (val) {
-                        if (mounted) {
-                          setState(() {
-                            _isSelectable = val;
                           });
                         }
                       },

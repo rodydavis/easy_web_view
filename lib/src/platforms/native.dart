@@ -1,7 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart' as wv;
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart'
+    as wviOS;
 
 import 'base.dart';
 
@@ -34,12 +34,12 @@ class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
 
   @override
   Future<void> evaluateJSMobile(String js) {
-    return _controller.runJavascript(js);
+    return _controller.runJavaScript(js);
   }
 
   @override
-  Future<String> evaluateJSWithResMobile(String js) {
-    return _controller.runJavascriptReturningResult(js);
+  Future<String> evaluateJSWithResMobile(String js) async {
+    return (await _controller.runJavaScriptReturningResult(js)) as String;
   }
 
   @override
@@ -53,12 +53,53 @@ class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
 class NativeWebViewState extends WebViewState<NativeWebView> {
   late wv.WebViewController controller;
 
+  wv.PlatformWebViewControllerCreationParams _buildControllerCreationParams() {
+    if (wv.WebViewPlatform.instance is wviOS.WebKitWebViewPlatform) {
+      return wviOS.WebKitWebViewControllerCreationParams();
+    } else {
+      return const wv.PlatformWebViewControllerCreationParams();
+    }
+  }
+
+  /// Setup the controller with [JavaScriptMode], [NavigationDelegate] and
+  /// add JavaScript channels passed in via options then load the request.
+  wv.WebViewController _createController(
+    wv.PlatformWebViewControllerCreationParams params,
+  ) {
+    final controller = wv.WebViewController.fromPlatformCreationParams(params)
+      ..setJavaScriptMode(wv.JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(wv.NavigationDelegate(
+        onNavigationRequest: (navigationRequest) async {
+          if (widget.options.navigationDelegate == null) {
+            return wv.NavigationDecision.navigate;
+          }
+          final _navDecision = await widget.options
+              .navigationDelegate!(WebNavigationRequest(navigationRequest.url));
+          return _navDecision == WebNavigationDecision.prevent
+              ? wv.NavigationDecision.prevent
+              : wv.NavigationDecision.navigate;
+        },
+      ));
+
+    // Add javascript channels to the controller
+    for (final event in widget.options.crossWindowEvents) {
+      controller.addJavaScriptChannel(event.name,
+          onMessageReceived: (javascriptMessage) {
+        event.eventAction(javascriptMessage.message);
+      });
+    }
+
+    // Load the initial url passed into the webview and return.
+    return controller..loadRequest(Uri.parse(url));
+  }
+
   @override
   void initState() {
     super.initState();
 
-    // Enable hybrid composition.
-    if (Platform.isAndroid) wv.WebView.platform = wv.SurfaceAndroidWebView();
+    final controllerCreationParams = _buildControllerCreationParams();
+    controller = _createController(controllerCreationParams);
+    widget.onLoaded?.call(EasyWebViewControllerWrapper._(controller));
   }
 
   @override
@@ -70,41 +111,14 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
   }
 
   reload() {
-    controller.loadUrl(url);
+    controller.loadRequest(Uri.parse(url));
   }
 
   @override
   Widget builder(BuildContext context, Size size, String contents) {
-    return wv.WebView(
+    return wv.WebViewWidget(
       key: widget.key,
-      initialUrl: url,
-      javascriptMode: wv.JavascriptMode.unrestricted,
-      onWebViewCreated: (value) {
-        controller = value;
-        if (widget.onLoaded != null) {
-          widget.onLoaded!(EasyWebViewControllerWrapper._(value));
-        }
-      },
-      navigationDelegate: (navigationRequest) async {
-        if (widget.options.navigationDelegate == null) {
-          return wv.NavigationDecision.navigate;
-        }
-        final _navDecision = await widget.options
-            .navigationDelegate!(WebNavigationRequest(navigationRequest.url));
-        return _navDecision == WebNavigationDecision.prevent
-            ? wv.NavigationDecision.prevent
-            : wv.NavigationDecision.navigate;
-      },
-      javascriptChannels: widget.options.crossWindowEvents.isNotEmpty
-          ? widget.options.crossWindowEvents
-              .map((event) => wv.JavascriptChannel(
-                    name: event.name,
-                    onMessageReceived: (javascriptMessage) {
-                      event.eventAction(javascriptMessage.message);
-                    },
-                  ))
-              .toSet()
-          : Set<wv.JavascriptChannel>(),
+      controller: controller,
     );
   }
 }
