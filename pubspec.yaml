@@ -14,7 +14,7 @@ dependencies:
   flutter_widget_from_html: ^0.8.5
   html2md: ^1.2.5
   http: ^0.13.3
-  markdown: ^4.0.0
+  markdown: ">=4.0.0 <8.0.0"
   permission_handler: ^9.2.0
   url_launcher: ^6.0.12
   webview_flutter: ^3.0.2
