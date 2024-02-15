@@ -20,6 +20,7 @@ class _HtmlToPdfTestState extends State<HtmlToPdfTest> {
   final _templateMemoizer = AsyncMemoizer<String>();
   EasyWebViewControllerWrapperBase? _controller;
   final _key = const ValueKey('test_html_to_pdf');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,9 +57,7 @@ class _HtmlToPdfTestState extends State<HtmlToPdfTest> {
           return EasyWebView(
             src: invoiceSrc,
             onLoaded: (controller) {
-              setState(() {
-                _controller = controller;
-              });
+              _controller = controller;
             },
             key: _key,
             options: WebViewOptions(
