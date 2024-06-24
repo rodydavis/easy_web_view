@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Added transparent background color to the native webview
+
 ## 2.0.0
 
 * Updated dependencies to latest versions

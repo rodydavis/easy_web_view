@@ -59,6 +59,7 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
     super.initState();
     controller = wv.WebViewController()
       ..setJavaScriptMode(wv.JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.transparent)
       ..setNavigationDelegate(
         wv.NavigationDelegate(
           onPageFinished: (url) {
