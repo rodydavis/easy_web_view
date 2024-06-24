@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:typed_data';
 import 'package:file_saver/file_saver.dart';
 
 import 'package:easy_web_view/easy_web_view.dart';
@@ -75,17 +74,17 @@ class _HtmlToPdfTestState extends State<HtmlToPdfTest> {
                           // final pdfResult = utf8.decode(res);
                           if (kIsWeb) {
                             await FileSaver.instance.saveFile(
-                              'easy_web_view_invoice',
-                              res,
-                              'pdf',
-                              mimeType: MimeType.PDF,
+                              name: 'easy_web_view_invoice',
+                              bytes: res,
+                              ext: 'pdf',
+                              mimeType: MimeType.pdf,
                             );
                           } else {
                             await FileSaver.instance.saveAs(
-                              'easy_web_view_invoice',
-                              res,
-                              'pdf',
-                              MimeType.PDF,
+                              name: 'easy_web_view_invoice',
+                              bytes: res,
+                              ext: 'pdf',
+                              mimeType: MimeType.pdf,
                             );
                           }
 

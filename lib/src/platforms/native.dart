@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart' as wv;
@@ -34,12 +34,13 @@ class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
 
   @override
   Future<void> evaluateJSMobile(String js) {
-    return _controller.runJavascript(js);
+    return _controller.runJavaScript(js);
   }
 
   @override
-  Future<String> evaluateJSWithResMobile(String js) {
-    return _controller.runJavascriptReturningResult(js);
+  Future<String> evaluateJSWithResMobile(String js) async {
+    final result = await _controller.runJavaScriptReturningResult(js);
+    return jsonEncode(result);
   }
 
   @override
@@ -56,9 +57,36 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
   @override
   void initState() {
     super.initState();
-
-    // Enable hybrid composition.
-    if (Platform.isAndroid) wv.WebView.platform = wv.SurfaceAndroidWebView();
+    controller = wv.WebViewController()
+      ..setJavaScriptMode(wv.JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        wv.NavigationDelegate(
+          onPageFinished: (url) {
+            if (widget.onLoaded != null) {
+              widget.onLoaded!(EasyWebViewControllerWrapper._(controller));
+            }
+          },
+          onNavigationRequest: (request) async {
+            if (widget.options.navigationDelegate == null) {
+              return wv.NavigationDecision.navigate;
+            }
+            final _navDecision = await widget //
+                .options
+                .navigationDelegate!(WebNavigationRequest(request.url));
+            return _navDecision == WebNavigationDecision.prevent
+                ? wv.NavigationDecision.prevent
+                : wv.NavigationDecision.navigate;
+          },
+        ),
+      );
+    for (final event in widget.options.crossWindowEvents) {
+      controller.addJavaScriptChannel(
+        event.name,
+        onMessageReceived: (javascriptMessage) {
+          event.eventAction(javascriptMessage.message);
+        },
+      );
+    }
   }
 
   @override
@@ -70,41 +98,15 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
   }
 
   reload() {
-    controller.loadUrl(url);
+    final uri = Uri.parse(url);
+    controller.loadRequest(uri);
   }
 
   @override
   Widget builder(BuildContext context, Size size, String contents) {
-    return wv.WebView(
+    return wv.WebViewWidget(
       key: widget.key,
-      initialUrl: url,
-      javascriptMode: wv.JavascriptMode.unrestricted,
-      onWebViewCreated: (value) {
-        controller = value;
-        if (widget.onLoaded != null) {
-          widget.onLoaded!(EasyWebViewControllerWrapper._(value));
-        }
-      },
-      navigationDelegate: (navigationRequest) async {
-        if (widget.options.navigationDelegate == null) {
-          return wv.NavigationDecision.navigate;
-        }
-        final _navDecision = await widget.options
-            .navigationDelegate!(WebNavigationRequest(navigationRequest.url));
-        return _navDecision == WebNavigationDecision.prevent
-            ? wv.NavigationDecision.prevent
-            : wv.NavigationDecision.navigate;
-      },
-      javascriptChannels: widget.options.crossWindowEvents.isNotEmpty
-          ? widget.options.crossWindowEvents
-              .map((event) => wv.JavascriptChannel(
-                    name: event.name,
-                    onMessageReceived: (javascriptMessage) {
-                      event.eventAction(javascriptMessage.message);
-                    },
-                  ))
-              .toSet()
-          : Set<wv.JavascriptChannel>(),
+      controller: controller,
     );
   }
 }

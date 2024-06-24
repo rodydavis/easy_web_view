@@ -185,7 +185,7 @@ class _BasicExampleState extends State<BasicExample> {
                       ),
                       Expanded(
                           flex: 1,
-                          child: Container(
+                          child: SizedBox(
                             width: (open) ? 500 : 0,
                             child: EasyWebView(
                               src: src3,

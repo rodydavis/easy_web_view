@@ -8,14 +8,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  file_saver: ^0.0.10
+  file_saver: ^0.2.13
   easy_web_view:
     path: ../
 
+  async: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true

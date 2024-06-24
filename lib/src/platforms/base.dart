@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_windows/webview_windows.dart'
     show WebviewPopupWindowPolicy;
@@ -11,7 +12,6 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart'
         OnErrorBuilder,
         OnLoadingBuilder,
         ImageMetadata,
-        RebuildTriggers,
         RenderMode;
 
 import 'package:flutter/material.dart';
@@ -83,7 +83,6 @@ class CrossWindowEvent {
   });
 }
 
-
 typedef OnLoaded = void Function(EasyWebViewControllerWrapperBase controller);
 
 abstract class EasyWebViewControllerWrapperBase {
@@ -143,12 +142,12 @@ class WidgetsWebViewOptions {
     this.onLoadingBuilder,
     this.onTapImage,
     this.onTapUrl,
-    this.rebuildTriggers,
     this.textStyle,
     this.isSelectable = false,
     this.enableCaching = true,
     this.onSelectionChanged,
     this.renderMode = RenderMode.column,
+    this.rebuildTriggers,
   });
 
   final bool? buildAsync;
@@ -160,11 +159,11 @@ class WidgetsWebViewOptions {
   final CustomWidgetBuilder? customWidgetBuilder;
   final OnErrorBuilder? onErrorBuilder;
   final OnLoadingBuilder? onLoadingBuilder;
-  final SelectionChangedCallback? onSelectionChanged;
+  final ValueChanged<SelectedContent?>? onSelectionChanged;
   final void Function(ImageMetadata)? onTapImage;
   final FutureOr<bool> Function(String)? onTapUrl;
-  final RebuildTriggers? rebuildTriggers;
   final RenderMode renderMode;
+  final List<dynamic>? rebuildTriggers;
   final TextStyle? textStyle;
 }
 

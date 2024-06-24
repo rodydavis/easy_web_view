@@ -1,3 +1,8 @@
+## 2.0.0
+
+* Updated dependencies to latest versions
+* Updated to Dart >=3.0.0 <4.0.0
+
 ## 1.6.0
 
 * Adding windows platform
