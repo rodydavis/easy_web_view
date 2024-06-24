@@ -1,3 +1,7 @@
+## 2.0.2
+
+* Fix initialUrl not working on mobile
+
 ## 2.0.1
 
 * Added transparent background color to the native webview

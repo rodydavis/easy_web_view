@@ -88,6 +88,7 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
         },
       );
     }
+    reload();
   }
 
   @override
