@@ -5,7 +5,8 @@ homepage: https://github.com/rodydavis/easy_web_view
 repository: https://github.com/rodydavis/easy_web_view
 maintainer: Rody Davis (@rodydavis)
 environment:
-  sdk: ">=3.5.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
+  flutter: ">=3.32.0 <4.0.0"
 
 dependencies:
   flutter:

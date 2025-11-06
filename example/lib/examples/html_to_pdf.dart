@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:typed_data';
 import 'package:file_saver/file_saver.dart';
 
 import 'package:easy_web_view/easy_web_view.dart';
